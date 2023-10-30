@@ -125,10 +125,11 @@ LEFT JOIN individual i ON c.customer_id = i.customer_id
 LEFT JOIN organization o ON c.customer_id = o.customer_id;
 
 
-DROP VIEW IF EXISTS late_loan_installments_view;
-CREATE VIEW late_loan_installments_view AS
+DROP VIEW IF EXISTS loan_installments_view;
+CREATE VIEW loan_installments_view AS
 SELECT
     l.loan_id AS `Loan ID`,
+    l.account_number AS `Account Number`,
     l.branch_id AS `Branch ID`,
     b.branch_name AS `Branch Name`,
     c.customer_id AS `Customer ID`,
