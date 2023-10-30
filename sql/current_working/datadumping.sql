@@ -116,14 +116,13 @@ INSERT INTO organization_individual VALUES
 
 INSERT INTO account VALUES 
   (2300021, 10001, 1001, 400000.00,'2016-11-11', 'Active', 'Saving', 3 ),
-  (4002830, 10002, 1005, 200.00,'2017-03-21', 'Suspended', 'Saving', 4 ),
+  (1002734, 10002, 1001, 50000.00,'2019-02-20', 'Active', 'Checking', 18 ),
   (6400028, 10003, 1003, 300000.00,'2017-07-11', 'Active', 'Saving', 1 ),
   (5000293, 10004, 1002, 103050.00,'2018-12-24', 'Active', 'Saving', 2 ),
-  (1002734, 10002, 1001, 50000.00,'2019-02-20', 'Active', 'Checking', 40 ),
   (9340000, 10005, 1001, 350750.00,'2020-04-11', 'Active', 'Saving', 3 ),
   (1837927, 10006, 1002, 100.00,'2020-08-04', 'Suspended', 'Checking', 3 ),
   (6400022, 10007, 1004, 0.00,'2020-11-15', 'Closed', 'Saving', 4 ),
-  (7223913, 10008, 1003, 120000.00,'2020-12-31', 'Active', 'Checking', 38 ),
+  (7223913, 10008, 1003, 120000.00,'2020-12-31', 'Active', 'Checking', 14 ),
   (1234567, 10009, 1005, 1030500.00,'2021-05-11', 'Active', 'Checking', 7 ),
   (9876543, 10010, 1004, 0.00,'2021-06-23', 'Closed', 'Saving', 5 ),
   (6543210, 10011, 1001, 400750.00,'2021-11-09', 'Active', 'Saving', 0 ),
@@ -144,7 +143,6 @@ INSERT INTO savings_plan VALUES
 -- Next payment date is NULL if the account is suspended or closed.
 INSERT INTO savings_account VALUES
   (2300021, '2023-11-11', 'Senior'),
-  (4002830, NULL, 'Adult'),
   (6400028, '2023-11-11', 'Adult'),
   (5000293, '2023-11-24', 'Senior'),
   (9340000, '2023-11-11', 'Teen'),

@@ -276,7 +276,7 @@ CREATE TABLE report (
 
 
 --
--- Data dumping
+-- Dumping data 
 --
 
 INSERT INTO web_platform_user VALUES
@@ -390,14 +390,13 @@ INSERT INTO organization_individual VALUES
 
 INSERT INTO account VALUES 
   (2300021, 10001, 1001, 400000.00,'2016-11-11', 'Active', 'Saving', 3 ),
-  (4002830, 10002, 1005, 200.00,'2017-03-21', 'Suspended', 'Saving', 4 ),
+  (1002734, 10002, 1001, 50000.00,'2019-02-20', 'Active', 'Checking', 18 ),
   (6400028, 10003, 1003, 300000.00,'2017-07-11', 'Active', 'Saving', 1 ),
   (5000293, 10004, 1002, 103050.00,'2018-12-24', 'Active', 'Saving', 2 ),
-  (1002734, 10002, 1001, 50000.00,'2019-02-20', 'Active', 'Checking', 40 ),
   (9340000, 10005, 1001, 350750.00,'2020-04-11', 'Active', 'Saving', 3 ),
   (1837927, 10006, 1002, 100.00,'2020-08-04', 'Suspended', 'Checking', 3 ),
   (6400022, 10007, 1004, 0.00,'2020-11-15', 'Closed', 'Saving', 4 ),
-  (7223913, 10008, 1003, 120000.00,'2020-12-31', 'Active', 'Checking', 38 ),
+  (7223913, 10008, 1003, 120000.00,'2020-12-31', 'Active', 'Checking', 14 ),
   (1234567, 10009, 1005, 1030500.00,'2021-05-11', 'Active', 'Checking', 7 ),
   (9876543, 10010, 1004, 0.00,'2021-06-23', 'Closed', 'Saving', 5 ),
   (6543210, 10011, 1001, 400750.00,'2021-11-09', 'Active', 'Saving', 0 ),
@@ -418,7 +417,6 @@ INSERT INTO savings_plan VALUES
 -- Next payment date is NULL if the account is suspended or closed.
 INSERT INTO savings_account VALUES
   (2300021, '2023-11-11', 'Senior'),
-  (4002830, NULL, 'Adult'),
   (6400028, '2023-11-11', 'Adult'),
   (5000293, '2023-11-24', 'Senior'),
   (9340000, '2023-11-11', 'Teen'),
@@ -1020,6 +1018,7 @@ BEGIN
     DECLARE branchid INT;
     DECLARE customerid INT;
     DECLARE loanid INT;
+    DECLARE accountnumber INT;
 
     -- Get the branch_id based on the manager's username
     SELECT branch_id INTO branchid
@@ -1028,6 +1027,11 @@ BEGIN
 
     -- Get the customer_id based on the request_id
     SELECT customer_id INTO customerid
+    FROM loan_request
+    WHERE request_id = requestid;
+
+    -- Get the account_number based on the request_id
+    SELECT account_number INTO accountnumber
     FROM loan_request
     WHERE request_id = requestid;
 
@@ -1041,6 +1045,9 @@ BEGIN
         -- Insert record into loan table
         INSERT INTO loan (customer_id, account_number, branch_id, loan_type, loan_amount, sanction_date, final_payment_date)
         VALUES (customerid, accountnumber, branchid, (SELECT loan_type FROM loan_request WHERE request_id = requestid), (SELECT loan_amount FROM loan_request WHERE request_id = requestid), CURDATE(), DATE_ADD(CURDATE(), INTERVAL duration MONTH));
+
+        -- deposit the loan amount
+        CALL deposit_loan_amount(accountnumber);
 
         -- Get the loan_id
         SELECT LAST_INSERT_ID() INTO loanid;
@@ -1078,6 +1085,9 @@ BEGIN
     -- Insert record into loan table
     INSERT INTO loan (customer_id, account_number, branch_id, loan_type, loan_amount, sanction_date, final_payment_date)
     VALUES (customerid, accountnumber, branchid, loantype, loanamount, CURDATE(), DATE_ADD(CURDATE(), INTERVAL duration MONTH));
+
+    -- deposit the loan amount
+    CALL deposit_loan_amount(accountnumber);
 
     -- Get the loan_id
     SELECT LAST_INSERT_ID() INTO loanid;
@@ -1125,11 +1135,57 @@ BEGIN
 
     -- Retrieve loan installments that are not paid
     SELECT
-        `Loan ID`,
-        `Account Number`,
-        `Due Date`
-    FROM loan_installments_view
-    WHERE `Branch ID` = branchid AND `Payment Date` = NULL;
+        l.loan_id AS `Loan ID`,
+        l.account_number AS `Account Number`,
+        li.due_date AS `Due Date`
+    FROM loan l
+    JOIN loan_installment li ON l.loan_id = li.loan_id
+    WHERE l.branch_id = branchid AND li.payment_date IS NULL;
+END //
+
+DROP PROCEDURE IF EXISTS customer_view_loan_details//
+CREATE PROCEDURE customer_view_loan_details(
+    IN username VARCHAR(50)
+)
+BEGIN
+    DECLARE customerid INT;
+
+    -- Get the customer_id based on the username
+    SELECT customer_id INTO customerid
+    FROM customer
+    WHERE user_name = username;
+
+    -- Retrieve loan installment details for the customer
+    SELECT
+        l.loan_id AS `Loan ID`,
+        l.account_number AS `Account Number`,
+        li.due_date AS `Due Date`,
+        li.amount AS `Amount`,
+        li.payment_date AS `Payment Date`
+    FROM loan l
+    JOIN loan_installment li ON l.loan_id = li.loan_id
+    WHERE l.customer_id = customerid;
+END //
+
+DROP PROCEDURE IF EXISTS deposit_loan_amount//
+CREATE PROCEDURE deposit_loan_amount(
+    IN accountnumber INT
+)
+BEGIN
+    DECLARE transactionid INT;
+
+    -- Insert record into transaction table
+    INSERT INTO transaction (amount, transaction_type, description, time_stamp)
+    VALUES ((SELECT loan_amount
+            FROM loan
+            WHERE account_number = accountnumber), 'Deposit', 'Loan Sanctioned', NOW());
+
+    -- Get the transaction_id
+    SELECT LAST_INSERT_ID() INTO transactionid;
+
+    -- Insert record into deposit table
+    INSERT INTO deposit (transaction_id, account_number)
+    VALUES (transactionid, accountnumber);
 END //
 
 -- automated procedures

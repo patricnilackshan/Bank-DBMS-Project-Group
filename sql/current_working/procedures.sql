@@ -322,6 +322,7 @@ BEGIN
     DECLARE branchid INT;
     DECLARE customerid INT;
     DECLARE loanid INT;
+    DECLARE accountnumber INT;
 
     -- Get the branch_id based on the manager's username
     SELECT branch_id INTO branchid
@@ -330,6 +331,11 @@ BEGIN
 
     -- Get the customer_id based on the request_id
     SELECT customer_id INTO customerid
+    FROM loan_request
+    WHERE request_id = requestid;
+
+    -- Get the account_number based on the request_id
+    SELECT account_number INTO accountnumber
     FROM loan_request
     WHERE request_id = requestid;
 
@@ -343,6 +349,9 @@ BEGIN
         -- Insert record into loan table
         INSERT INTO loan (customer_id, account_number, branch_id, loan_type, loan_amount, sanction_date, final_payment_date)
         VALUES (customerid, accountnumber, branchid, (SELECT loan_type FROM loan_request WHERE request_id = requestid), (SELECT loan_amount FROM loan_request WHERE request_id = requestid), CURDATE(), DATE_ADD(CURDATE(), INTERVAL duration MONTH));
+
+        -- deposit the loan amount
+        CALL deposit_loan_amount(accountnumber);
 
         -- Get the loan_id
         SELECT LAST_INSERT_ID() INTO loanid;
@@ -380,6 +389,9 @@ BEGIN
     -- Insert record into loan table
     INSERT INTO loan (customer_id, account_number, branch_id, loan_type, loan_amount, sanction_date, final_payment_date)
     VALUES (customerid, accountnumber, branchid, loantype, loanamount, CURDATE(), DATE_ADD(CURDATE(), INTERVAL duration MONTH));
+
+    -- deposit the loan amount
+    CALL deposit_loan_amount(accountnumber);
 
     -- Get the loan_id
     SELECT LAST_INSERT_ID() INTO loanid;
@@ -427,11 +439,57 @@ BEGIN
 
     -- Retrieve loan installments that are not paid
     SELECT
-        `Loan ID`,
-        `Account Number`,
-        `Due Date`
-    FROM loan_installments_view
-    WHERE `Branch ID` = branchid AND `Payment Date` = NULL;
+        l.loan_id AS `Loan ID`,
+        l.account_number AS `Account Number`,
+        li.due_date AS `Due Date`
+    FROM loan l
+    JOIN loan_installment li ON l.loan_id = li.loan_id
+    WHERE l.branch_id = branchid AND li.payment_date IS NULL;
+END //
+
+DROP PROCEDURE IF EXISTS customer_view_loan_details//
+CREATE PROCEDURE customer_view_loan_details(
+    IN username VARCHAR(50)
+)
+BEGIN
+    DECLARE customerid INT;
+
+    -- Get the customer_id based on the username
+    SELECT customer_id INTO customerid
+    FROM customer
+    WHERE user_name = username;
+
+    -- Retrieve loan installment details for the customer
+    SELECT
+        l.loan_id AS `Loan ID`,
+        l.account_number AS `Account Number`,
+        li.due_date AS `Due Date`,
+        li.amount AS `Amount`,
+        li.payment_date AS `Payment Date`
+    FROM loan l
+    JOIN loan_installment li ON l.loan_id = li.loan_id
+    WHERE l.customer_id = customerid;
+END //
+
+DROP PROCEDURE IF EXISTS deposit_loan_amount//
+CREATE PROCEDURE deposit_loan_amount(
+    IN accountnumber INT
+)
+BEGIN
+    DECLARE transactionid INT;
+
+    -- Insert record into transaction table
+    INSERT INTO transaction (amount, transaction_type, description, time_stamp)
+    VALUES ((SELECT loan_amount
+            FROM loan
+            WHERE account_number = accountnumber), 'Deposit', 'Loan Sanctioned', NOW());
+
+    -- Get the transaction_id
+    SELECT LAST_INSERT_ID() INTO transactionid;
+
+    -- Insert record into deposit table
+    INSERT INTO deposit (transaction_id, account_number)
+    VALUES (transactionid, accountnumber);
 END //
 
 -- automated procedures
