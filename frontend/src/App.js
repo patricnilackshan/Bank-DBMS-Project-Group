@@ -31,6 +31,10 @@ import { Transaction } from "./Components/Transaction"
 import { ApplyLoan } from "./Components/ApplyLoan"
 import { CreateRequest } from "./Components/CreateRequest"
 import { CreateFD } from "./Components/CreateFD"
+import { EmployeeTransaction } from "./Components/EmployeeTransaction"
+import { PhysicalTransaction } from "./Components/PhysicalTransaction"
+import { Deposit } from "./Components/Deposit"
+import { Withdrawal } from "./Components/Withdrawal"
 
 export default function App() {
   return (
@@ -66,6 +70,10 @@ export default function App() {
         <Route path="/applyloan" element={<ApplyLoan />} />
         <Route path="/createrequest" element={<CreateRequest />} />
         <Route path="/createfd" element={<CreateFD />} />
+        <Route path="/employeetransaction" element={<EmployeeTransaction />} />
+        <Route path="/physicaltransaction" element={<PhysicalTransaction />} />
+        <Route path="/deposit" element={<Deposit />} />
+        <Route path="/withdrawal" element={<Withdrawal />} />
       </Routes>
     </BrowserRouter>
   );

@@ -41,13 +41,13 @@ export function Transaction() {
 
                             <div class="row">                               
                                 <div class="col-25">
-                                    <label>Initial Amount</label> 
+                                    <label>Amount</label> 
                                 </div>
                                 <div class="col-75">
                                     <input
                                         type="number"
                                         className="form-control mt-1"
-                                        placeholder="Enter initial amount in SCR"
+                                        placeholder="Enter amount in SCR"
                                         min="1000"
                                         max="999999"
                                     />
