@@ -34,6 +34,8 @@ export function CreateFD() {
                                         type="number"
                                         className="form-control mt-1"
                                         placeholder="Enter amount in SCR"
+                                        min="1000"
+                                        max="999999"
                                     />
                                 </div>
                             </div>
