@@ -13,7 +13,7 @@ DO
 BEGIN
     DECLARE loanid INT;
     DECLARE duedate DATE;
-    DECLARE done bool DEFAULT FALSE;
+    DECLARE done boolean DEFAULT FALSE;
     -- cursor for all the loan ids that has loan installments with null payment date and due date less than current date
     DECLARE loanid_curs CURSOR FOR SELECT loan_id, due_date FROM loan_installment WHERE payment_date IS NULL AND due_date < CURDATE();
     -- not found handler
@@ -40,7 +40,7 @@ ON SCHEDULE EVERY 1 DAY
 DO
 BEGIN
     DECLARE accountnumber INT;
-    DECLARE done bool DEFAULT FALSE;
+    DECLARE done boolean DEFAULT FALSE;
     -- cursor for all the account numbers that has next calculation date as today
     DECLARE accountnumber_curs CURSOR FOR SELECT account_number FROM savings_account WHERE next_calculation_on = CURDATE();
     -- not found handler
@@ -67,7 +67,7 @@ ON SCHEDULE EVERY 1 DAY
 DO
 BEGIN
     DECLARE fdno INT;
-    DECLARE done bool DEFAULT FALSE;
+    DECLARE done boolean DEFAULT FALSE;
     -- cursor for every fd no that has next interest deposit date as today
     DECLARE fdno_curs CURSOR FOR SELECT fd_no FROM fd WHERE next_interest_deposit_date = CURDATE();
     -- not found handler
@@ -95,7 +95,7 @@ DO
 BEGIN
     DECLARE loanid INT;
     DECLARE duedate DATE;
-    DECLARE done bool DEFAULT FALSE;
+    DECLARE done boolean DEFAULT FALSE;
     -- cursor for all the loan ids that has loan installments with null payment date and due date less than current date
     DECLARE loanid_curs CURSOR FOR SELECT loan_id, due_date FROM loan_installment WHERE due_date = CURDATE();
     -- not found handler
