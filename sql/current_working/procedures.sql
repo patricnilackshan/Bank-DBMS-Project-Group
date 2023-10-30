@@ -70,16 +70,16 @@ END //
 
 DROP PROCEDURE IF EXISTS get_branch_transactions//
 CREATE PROCEDURE get_branch_transaction_details(
-    IN employee_username VARCHAR(50)
+    IN username VARCHAR(50)
 )
 BEGIN
-    DECLARE employee_branch_id INT;
+    DECLARE branchid INT;
 
     -- Find the branch assigned to the employee
-    SELECT b.branch_id INTO employee_branch_id
+    SELECT b.branch_id INTO branchid
     FROM employee e
     JOIN branch b ON e.branch_id = b.branch_id
-    WHERE e.user_name = employee_username;
+    WHERE e.user_name = username;
     
     -- Retrieve branch transactions
     SELECT
@@ -92,7 +92,7 @@ BEGIN
         `Customer ID`,
         `Customer Name`
     FROM transactions_details_view
-    WHERE `Branch ID` = employee_branch_id;
+    WHERE `Branch ID` = branchid;
 
 END //
 
@@ -245,13 +245,14 @@ BEGIN
     -- Generate branch-wise late loan installment report
     SELECT
         `Loan ID`,
+        `Account Number`,
         `Customer ID`,
         `Customer Name`,
         `Due Date`,
         `Amount`,
         `Payment Date`,
         `Status`
-    FROM late_loan_installments_view
+    FROM loan_installments_view
     WHERE `Branch ID` = branchid
     AND `Status` IN ('Late', 'Overdue') AND `Due Date` BETWEEN start_date AND end_date;
 
@@ -283,8 +284,8 @@ BEGIN
     WHERE user_name = username;
 
     -- Insert record into loan_request table
-    INSERT INTO loan_request (customer_id, branch_id, loan_amount, loan_type)
-    VALUES (customerid, branchid, loanamount, loantype);
+    INSERT INTO loan_request (customer_id, account_number, branch_id, loan_amount, loan_type)
+    VALUES (customerid, accountnumber, branchid, loanamount, loantype);
 END //
 
 DROP PROCEDURE IF EXISTS view_loan_requests//
@@ -340,8 +341,8 @@ BEGIN
     -- Insert record into offline_loan table if approved
     IF isapproved THEN
         -- Insert record into loan table
-        INSERT INTO loan (customer_id, branch_id, loan_type, loan_amount, sanction_date, final_payment_date)
-        VALUES (customerid, branchid, (SELECT loan_type FROM loan_request WHERE request_id = requestid), (SELECT loan_amount FROM loan_request WHERE request_id = requestid), CURDATE(), DATE_ADD(CURDATE(), INTERVAL duration MONTH));
+        INSERT INTO loan (customer_id, account_number, branch_id, loan_type, loan_amount, sanction_date, final_payment_date)
+        VALUES (customerid, accountnumber, branchid, (SELECT loan_type FROM loan_request WHERE request_id = requestid), (SELECT loan_amount FROM loan_request WHERE request_id = requestid), CURDATE(), DATE_ADD(CURDATE(), INTERVAL duration MONTH));
 
         -- Get the loan_id
         SELECT LAST_INSERT_ID() INTO loanid;
@@ -377,8 +378,8 @@ BEGIN
     WHERE c.user_name = username;
 
     -- Insert record into loan table
-    INSERT INTO loan (customer_id, branch_id, loan_type, loan_amount, sanction_date, final_payment_date)
-    VALUES (customerid, branchid, loantype, loanamount, CURDATE(), DATE_ADD(CURDATE(), INTERVAL duration MONTH));
+    INSERT INTO loan (customer_id, account_number, branch_id, loan_type, loan_amount, sanction_date, final_payment_date)
+    VALUES (customerid, accountnumber, branchid, loantype, loanamount, CURDATE(), DATE_ADD(CURDATE(), INTERVAL duration MONTH));
 
     -- Get the loan_id
     SELECT LAST_INSERT_ID() INTO loanid;
@@ -412,7 +413,26 @@ BEGIN
     CALL add_remove_loan_arrears(loanid, duedate, 0);
 END //
 
+DROP PROCEDURE IF EXISTS view_unpaid_loan_installments//
+CREATE PROCEDURE view_unpaid_loan_installments(
+    IN username VARCHAR(50)
+)
+BEGIN
+    DECLARE branchid INT;
 
+    -- Get the branch_id based on the employee's username
+    SELECT branch_id INTO branchid
+    FROM employee
+    WHERE user_name = username;
+
+    -- Retrieve loan installments that are not paid
+    SELECT
+        `Loan ID`,
+        `Account Number`,
+        `Due Date`
+    FROM loan_installments_view
+    WHERE `Branch ID` = branchid AND `Payment Date` = NULL;
+END //
 
 -- automated procedures
 
@@ -519,7 +539,7 @@ BEGIN
                                         WHEN maturity_date = CURDATE() THEN NULL
                                         ELSE DATE_ADD(CURDATE(), INTERVAL 1 MONTH)
                                      END
-    WHERE fd_no = fdno;  
+    WHERE fd_no = fdno;    
 END //
 
 DROP PROCEDURE IF EXISTS add_loan_installment//
@@ -536,7 +556,5 @@ BEGIN
                                                 FROM loan
                                                 WHERE loan_id = loanid), duedate);
 END //
-
-
 
 DELIMITER ;
