@@ -1,0 +1,310 @@
+* {
+    box-sizing: border-box;
+}
+
+/* Auth form */
+.Auth-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-image: url(https://i.pinimg.com/originals/8c/95/2b/8c952b205b4ad83285116fff6b121795.jpg);
+    background-size: cover;
+}
+
+.Auth-form-container-big  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 150vh;
+    color: maroon;
+    background-image: url(https://i.pinimg.com/originals/8c/95/2b/8c952b205b4ad83285116fff6b121795.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
+    background-size: cover;
+}
+
+.Auth-form-container-medium  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 125vh;
+    color: maroon;
+    background-image: url(https://i.pinimg.com/originals/8c/95/2b/8c952b205b4ad83285116fff6b121795.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
+    background-size: cover;
+}
+
+
+.Auth-form {
+    width: 700px;
+    box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    border-radius: 8px;
+    background-color: rgba(84,198,221,0.737);
+}
+
+.Auth-form-medium {
+    width: 525px;
+    box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    border-radius: 8px;
+    background-color: rgba(84,198,221,0.737);
+}
+
+.Auth-form-small {
+    width: 350px;
+    box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    border-radius: 8px;
+    background-color: rgba(84,198,221,0.737);
+}
+
+.Auth-form-content {
+    padding-left: 12%;
+    padding-right: 12%;
+}
+
+.Auth-form-title {
+    text-align: center;
+    margin-bottom: 1em;
+    font-size: 24px;
+    color: black;
+    font-weight: 800;
+}
+
+/* Button */
+                  
+.button {
+    display: inline-block;
+    border-radius: 50px;
+    background-color: orange;
+    border: none;
+    color: #000000;
+    text-align: center;
+    font-size: 24px;
+    padding: 20px;
+    width: 525px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+    
+.button span {
+cursor: pointer;
+display: inline-block;
+position: relative;
+transition: 0.5s;
+}
+
+.button span:after {
+content: '»';
+position: absolute;
+opacity: 0;
+top: 0;
+right: -20px;
+transition: 0.5s;
+}
+
+.button:hover span {
+padding-right: 25px;
+}
+
+.button:hover span:after {
+opacity: 1;
+right: 0;                   
+}
+
+.backbutton {
+    display: inline-block;
+    border-radius: 100px;
+    background-color: orange;
+    border: none;
+    color: #000000;
+    text-align: center;
+    font-size: 18px;
+    padding: 20px;
+    width: 525px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.backbutton span {
+cursor: pointer;
+display: inline-block;
+position: relative;
+transition: 0.5s;
+}
+
+.backbutton span:after {
+content: '«';
+position: absolute;
+opacity: 0;
+top: 0;
+right: -20px;
+transition: 0.5s;
+}
+
+.backbutton:hover span {
+padding-right: 25px;
+}
+
+.backbutton:hover span:after {
+opacity: 1;
+right: 0;                   
+}
+
+/* Small backbutton */
+.backbutton-small{
+    display: inline-block;
+    border-radius: 100px;
+    background-color: orange;
+    border: none;
+    color: #000000;
+    text-align: center;
+    font-size: 18px;
+    padding: 20px;
+    width: 250px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.backbutton-small span {
+cursor: pointer;
+display: inline-block;
+position: relative;
+transition: 0.5s;
+}
+
+.backbutton-small span:after {
+content: '«';
+position: absolute;
+opacity: 0;
+top: 0;
+right: -20px;
+transition: 0.5s;
+}
+
+.backbutton-small:hover span {
+padding-right: 25px;
+}
+
+.backbutton-small:hover span:after {
+opacity: 1;
+right: 0;                   
+}
+
+
+
+
+
+/* Label */
+
+.label {
+    padding: 12px 12px 12px;
+    display: inline-block;
+}
+
+/* Input */
+
+input[type=submit] {
+    background-color: #04AA6D;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+input[type=date], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+input[type=text], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+input[type=email], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+input[type=password], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+input[type=number], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Columns */
+
+.col-25 {
+    float: left;
+    width: 25%;
+    margin-top: 6px;
+}
+
+.col-35 {
+    float: left;
+    width: 35%;
+    margin-top: 6px;
+}
+
+.col-75 {
+    float: left;
+    width: 75%;
+    margin-top: 6px;
+}
+
+
+/* Rows */
+
+.row::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+
