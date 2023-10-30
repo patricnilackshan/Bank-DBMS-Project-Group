@@ -201,6 +201,7 @@ DROP TABLE IF EXISTS loan;
 CREATE TABLE loan (
     loan_id int NOT NULL AUTO_INCREMENT,
     customer_id int UNSIGNED NOT NULL,
+    account_number int NOT NULL,
     branch_id int UNSIGNED NOT NULL,
     loan_type enum('Business', 'Personal') NOT NULL,
     loan_amount numeric(8,2) NOT NULL,
@@ -208,7 +209,8 @@ CREATE TABLE loan (
     final_payment_date date,
     PRIMARY KEY (loan_id),
     FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
-    FOREIGN KEY (branch_id) REFERENCES branch(branch_id)
+    FOREIGN KEY (branch_id) REFERENCES branch(branch_id),
+    FOREIGN KEY (account_number) REFERENCES account(account_number)
 );
 
 DROP TABLE IF EXISTS online_loan;
@@ -224,13 +226,15 @@ DROP TABLE IF EXISTS loan_request;
 CREATE TABLE loan_request (
     request_id int NOT NULL AUTO_INCREMENT,
     customer_id int UNSIGNED NOT NULL,
+    account_number int NOT NULL,
     branch_id int UNSIGNED NOT NULL,
     is_approved boolean NOT NULL DEFAULT FALSE,
     loan_amount numeric(10,2) NOT NULL,
     loan_type enum('Business', 'Personal') NOT NULL,
     PRIMARY KEY (request_id),
     FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
-    FOREIGN KEY (branch_id) REFERENCES branch(branch_id)
+    FOREIGN KEY (branch_id) REFERENCES branch(branch_id),
+    FOREIGN KEY (account_number) REFERENCES account(account_number)
 );
 
 DROP TABLE IF EXISTS offline_loan;
