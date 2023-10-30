@@ -201,6 +201,7 @@ DROP TABLE IF EXISTS loan;
 CREATE TABLE loan (
     loan_id int NOT NULL AUTO_INCREMENT,
     customer_id int UNSIGNED NOT NULL,
+    account_number int NOT NULL,
     branch_id int UNSIGNED NOT NULL,
     loan_type enum('Business', 'Personal') NOT NULL,
     loan_amount numeric(8,2) NOT NULL,
@@ -208,7 +209,8 @@ CREATE TABLE loan (
     final_payment_date date,
     PRIMARY KEY (loan_id),
     FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
-    FOREIGN KEY (branch_id) REFERENCES branch(branch_id)
+    FOREIGN KEY (branch_id) REFERENCES branch(branch_id),
+    FOREIGN KEY (account_number) REFERENCES account(account_number)
 );
 
 DROP TABLE IF EXISTS online_loan;
@@ -224,13 +226,15 @@ DROP TABLE IF EXISTS loan_request;
 CREATE TABLE loan_request (
     request_id int NOT NULL AUTO_INCREMENT,
     customer_id int UNSIGNED NOT NULL,
+    account_number int NOT NULL,
     branch_id int UNSIGNED NOT NULL,
     is_approved boolean NOT NULL DEFAULT FALSE,
     loan_amount numeric(10,2) NOT NULL,
     loan_type enum('Business', 'Personal') NOT NULL,
     PRIMARY KEY (request_id),
     FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
-    FOREIGN KEY (branch_id) REFERENCES branch(branch_id)
+    FOREIGN KEY (branch_id) REFERENCES branch(branch_id),
+    FOREIGN KEY (account_number) REFERENCES account(account_number)
 );
 
 DROP TABLE IF EXISTS offline_loan;
@@ -479,25 +483,25 @@ INSERT INTO withdrawal VALUES
   (970013, 6003002); 
 
 INSERT INTO loan VALUES
-  (90001, 10004, 1001, 'Personal', 100000.00, '2022-05-28', '2023-05-28' ),
-  (90002, 10016, 1005, 'Personal', 200000.00, '2022-06-30', '2023-06-30' ),
-  (90003, 10002, 1001, 'Business', 400000.00, '2023-07-03', '2026-07-03' ),
-  (90004, 10017, 1004, 'Personal', 200000.00, '2023-08-05', '2025-08-05' ),
-  (90005, 10003, 1002, 'Personal', 250000.00, '2023-08-14', '2024-08-14' ),
-  (90006, 10001, 1003, 'Personal', 400000.00, '2023-08-22', '2025-08-22' ),
-  (90007, 10012, 1005, 'Personal', 200000.00, '2023-09-15', '2026-09-15' ); 
+  (90001, 10004, 5000293, 1001, 'Personal', 100000.00, '2022-05-28', '2023-05-28' ),
+  (90002, 10016, 6059430, 1005, 'Personal', 200000.00, '2022-06-30', '2023-06-30' ),
+  (90003, 10002, 1002734, 1001, 'Business', 400000.00, '2023-07-03', '2026-07-03' ),
+  (90004, 10017, 2234649, 1004, 'Personal', 200000.00, '2023-08-05', '2025-08-05' ),
+  (90005, 10003, 6400028, 1002, 'Personal', 250000.00, '2023-08-14', '2024-08-14' ),
+  (90006, 10001, 2300021, 1003, 'Personal', 400000.00, '2023-08-22', '2025-08-22' ),
+  (90007, 10012, 6003002, 1005, 'Personal', 200000.00, '2023-09-15', '2026-09-15' ); 
 
 INSERT INTO online_loan VALUES (90006, 123456), (90007, 720043);
 
 INSERT INTO loan_request VALUES
-  (70001, 10004, 1001, TRUE, 100000.00, 'Personal'),
-  (70002, 10009, 1004, FALSE, 5000000.00, 'Business'),
-  (70003, 10016, 1005, TRUE, 200000.00, 'Personal'),
-  (70004, 10010, 1003, FALSE, 300000.00, 'Personal'),
-  (70005, 10002, 1001, FALSE, 400000.00, 'Business'),
-  (70006, 10007, 1003, FALSE, 3000000.00, 'Business'),
-  (70007, 10017, 1004, TRUE, 200000.00, 'Personal'),
-  (70008, 10003, 1002, TRUE, 250000.00, 'Personal');
+  (70001, 10004, 5000293, 1001, TRUE, 100000.00, 'Personal'),
+  (70002, 10009, 1234567, 1004, FALSE, 5000000.00, 'Business'),
+  (70003, 10016, 6059430, 1005, TRUE, 200000.00, 'Personal'),
+  (70004, 10010, 9876543, 1003, FALSE, 300000.00, 'Personal'),
+  (70005, 10002, 1002734, 1001, TRUE, 400000.00, 'Business'),
+  (70006, 10007, 6400022, 1003, FALSE, 3000000.00, 'Business'),
+  (70007, 10017, 2234649, 1004, TRUE, 200000.00, 'Personal'),
+  (70008, 10003, 6400028, 1002, TRUE, 250000.00, 'Personal');
 
 INSERT INTO offline_loan VALUES
   (90001, 70001), (90002, 70003), (90003, 70005), (90004, 70007), (90005, 70008);
@@ -662,10 +666,11 @@ LEFT JOIN individual i ON c.customer_id = i.customer_id
 LEFT JOIN organization o ON c.customer_id = o.customer_id;
 
 
-DROP VIEW IF EXISTS late_loan_installments_view;
-CREATE VIEW late_loan_installments_view AS
+DROP VIEW IF EXISTS loan_installments_view;
+CREATE VIEW loan_installments_view AS
 SELECT
     l.loan_id AS `Loan ID`,
+    l.account_number AS `Account Number`,
     l.branch_id AS `Branch ID`,
     b.branch_name AS `Branch Name`,
     c.customer_id AS `Customer ID`,
@@ -763,16 +768,16 @@ END //
 
 DROP PROCEDURE IF EXISTS get_branch_transactions//
 CREATE PROCEDURE get_branch_transaction_details(
-    IN employee_username VARCHAR(50)
+    IN username VARCHAR(50)
 )
 BEGIN
-    DECLARE employee_branch_id INT;
+    DECLARE branchid INT;
 
     -- Find the branch assigned to the employee
-    SELECT b.branch_id INTO employee_branch_id
+    SELECT b.branch_id INTO branchid
     FROM employee e
     JOIN branch b ON e.branch_id = b.branch_id
-    WHERE e.user_name = employee_username;
+    WHERE e.user_name = username;
     
     -- Retrieve branch transactions
     SELECT
@@ -785,7 +790,7 @@ BEGIN
         `Customer ID`,
         `Customer Name`
     FROM transactions_details_view
-    WHERE `Branch ID` = employee_branch_id;
+    WHERE `Branch ID` = branchid;
 
 END //
 
@@ -938,13 +943,14 @@ BEGIN
     -- Generate branch-wise late loan installment report
     SELECT
         `Loan ID`,
+        `Account Number`,
         `Customer ID`,
         `Customer Name`,
         `Due Date`,
         `Amount`,
         `Payment Date`,
         `Status`
-    FROM late_loan_installments_view
+    FROM loan_installments_view
     WHERE `Branch ID` = branchid
     AND `Status` IN ('Late', 'Overdue') AND `Due Date` BETWEEN start_date AND end_date;
 
@@ -976,8 +982,8 @@ BEGIN
     WHERE user_name = username;
 
     -- Insert record into loan_request table
-    INSERT INTO loan_request (customer_id, branch_id, loan_amount, loan_type)
-    VALUES (customerid, branchid, loanamount, loantype);
+    INSERT INTO loan_request (customer_id, account_number, branch_id, loan_amount, loan_type)
+    VALUES (customerid, accountnumber, branchid, loanamount, loantype);
 END //
 
 DROP PROCEDURE IF EXISTS view_loan_requests//
@@ -1033,8 +1039,8 @@ BEGIN
     -- Insert record into offline_loan table if approved
     IF isapproved THEN
         -- Insert record into loan table
-        INSERT INTO loan (customer_id, branch_id, loan_type, loan_amount, sanction_date, final_payment_date)
-        VALUES (customerid, branchid, (SELECT loan_type FROM loan_request WHERE request_id = requestid), (SELECT loan_amount FROM loan_request WHERE request_id = requestid), CURDATE(), DATE_ADD(CURDATE(), INTERVAL duration MONTH));
+        INSERT INTO loan (customer_id, account_number, branch_id, loan_type, loan_amount, sanction_date, final_payment_date)
+        VALUES (customerid, accountnumber, branchid, (SELECT loan_type FROM loan_request WHERE request_id = requestid), (SELECT loan_amount FROM loan_request WHERE request_id = requestid), CURDATE(), DATE_ADD(CURDATE(), INTERVAL duration MONTH));
 
         -- Get the loan_id
         SELECT LAST_INSERT_ID() INTO loanid;
@@ -1070,8 +1076,8 @@ BEGIN
     WHERE c.user_name = username;
 
     -- Insert record into loan table
-    INSERT INTO loan (customer_id, branch_id, loan_type, loan_amount, sanction_date, final_payment_date)
-    VALUES (customerid, branchid, loantype, loanamount, CURDATE(), DATE_ADD(CURDATE(), INTERVAL duration MONTH));
+    INSERT INTO loan (customer_id, account_number, branch_id, loan_type, loan_amount, sanction_date, final_payment_date)
+    VALUES (customerid, accountnumber, branchid, loantype, loanamount, CURDATE(), DATE_ADD(CURDATE(), INTERVAL duration MONTH));
 
     -- Get the loan_id
     SELECT LAST_INSERT_ID() INTO loanid;
@@ -1105,7 +1111,26 @@ BEGIN
     CALL add_remove_loan_arrears(loanid, duedate, 0);
 END //
 
+DROP PROCEDURE IF EXISTS view_unpaid_loan_installments//
+CREATE PROCEDURE view_unpaid_loan_installments(
+    IN username VARCHAR(50)
+)
+BEGIN
+    DECLARE branchid INT;
 
+    -- Get the branch_id based on the employee's username
+    SELECT branch_id INTO branchid
+    FROM employee
+    WHERE user_name = username;
+
+    -- Retrieve loan installments that are not paid
+    SELECT
+        `Loan ID`,
+        `Account Number`,
+        `Due Date`
+    FROM loan_installments_view
+    WHERE `Branch ID` = branchid AND `Payment Date` = NULL;
+END //
 
 -- automated procedures
 
@@ -1248,7 +1273,7 @@ DO
 BEGIN
     DECLARE loanid INT;
     DECLARE duedate DATE;
-    DECLARE done bool DEFAULT FALSE;
+    DECLARE done boolean DEFAULT FALSE;
     -- cursor for all the loan ids that has loan installments with null payment date and due date less than current date
     DECLARE loanid_curs CURSOR FOR SELECT loan_id, due_date FROM loan_installment WHERE payment_date IS NULL AND due_date < CURDATE();
     -- not found handler
@@ -1275,7 +1300,7 @@ ON SCHEDULE EVERY 1 DAY
 DO
 BEGIN
     DECLARE accountnumber INT;
-    DECLARE done bool DEFAULT FALSE;
+    DECLARE done boolean DEFAULT FALSE;
     -- cursor for all the account numbers that has next calculation date as today
     DECLARE accountnumber_curs CURSOR FOR SELECT account_number FROM savings_account WHERE next_calculation_on = CURDATE();
     -- not found handler
@@ -1302,7 +1327,7 @@ ON SCHEDULE EVERY 1 DAY
 DO
 BEGIN
     DECLARE fdno INT;
-    DECLARE done bool DEFAULT FALSE;
+    DECLARE done boolean DEFAULT FALSE;
     -- cursor for every fd no that has next interest deposit date as today
     DECLARE fdno_curs CURSOR FOR SELECT fd_no FROM fd WHERE next_interest_deposit_date = CURDATE();
     -- not found handler
@@ -1330,7 +1355,7 @@ DO
 BEGIN
     DECLARE loanid INT;
     DECLARE duedate DATE;
-    DECLARE done bool DEFAULT FALSE;
+    DECLARE done boolean DEFAULT FALSE;
     -- cursor for all the loan ids that has loan installments with null payment date and due date less than current date
     DECLARE loanid_curs CURSOR FOR SELECT loan_id, due_date FROM loan_installment WHERE due_date = CURDATE();
     -- not found handler
