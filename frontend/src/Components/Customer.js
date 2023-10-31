@@ -20,6 +20,7 @@ export function Customer() {
                             <button class="button" style="vertical-align:middle" formAction="/CreateFD"><span>Start a Fixed Deposit </span></button><br>
                             <button class="button" style="vertical-align:middle" formAction="/CheckInstallment"><span>Check Loan Installments </span></button><br>
                             <button class="button" style="vertical-align:middle" formAction="/PayInstallment"><span>Pay Loan Installments </span></button><br>
+                            <button class="button" style="vertical-align:middle" formAction="/Statement"><span>Get Bank Statement </span></button><br>
                             <button class="button" style="vertical-align:middle" formAction="/"><span>Log Out</span></button>                          
                         </div>
                     </form>
