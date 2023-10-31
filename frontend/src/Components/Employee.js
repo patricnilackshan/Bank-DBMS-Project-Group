@@ -9,7 +9,7 @@ export function Employee() {
             <meta name="viewport" content="width=device-width, initial-scale=1">
             </head>
             <body>
-                <div class="Auth-form-container">
+                <div class="Auth-form-container-big">
                     <form class="Auth-form" action="/Employee">
                         <div class="Auth-form-content">
                             <h3 class="Auth-form-title" align="center">Welcome Back!</h3>
@@ -17,6 +17,8 @@ export function Employee() {
                             <button class="button" style="vertical-align:middle" formAction="/ChooseCustomer"><span>Register a New Customer</span></button><br>                   
                             <button class="button" style="vertical-align:middle" formAction="/ChooseAccount"><span>Open a New Bank Account</span></button><br>
                             <button class="button" style="vertical-align:middle" formAction="/EmployeeTransaction"><span>Upadate a Deposit, Transaction or Withdrawal</span></button><br>
+                            <button class="button" style="vertical-align:middle" formAction="/LoanDetails"><span>View Loan Details</span></button><br>
+                            <button class="button" style="vertical-align:middle" formAction="/PaymentDate"><span>Update Payment Date</span></button><br>
                             <button class="button" style="vertical-align:middle" formAction="/GetCustomerEmployee"><span>Get Customer Details </span></button><br>
                             <button class="button" style="vertical-align:middle" formAction="/CreateRequest"><span>Create a Loan Request</span></button><br>
                             <button class="button" style="vertical-align:middle" formAction="/"><span>Log Out</span></button>                          

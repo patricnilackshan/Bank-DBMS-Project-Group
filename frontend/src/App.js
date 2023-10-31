@@ -42,6 +42,8 @@ import { ViewManager } from "./Components/ViewManager"
 import { GetCustomerEmployee } from "./Components/GetCustomerEmployee"
 import { GetCustomerManager } from "./Components/GetCustomerManager"
 import { Statement } from "./Components/Statement"
+import { LoanDetails } from "./Components/LoanDetails"
+import { PaymentDate } from "./Components/PaymentDate"
 
 export default function App() {
   return (
@@ -88,6 +90,9 @@ export default function App() {
         <Route path="/getcustomeremployee" element={<GetCustomerEmployee />} />
         <Route path="/getcustomermanager" element={<GetCustomerManager />} />
         <Route path="/statement" element={<Statement />} />
+        <Route path="/loandetails" element={<LoanDetails />} />
+        <Route path="/paymentdate" element={<PaymentDate />} />
+
       </Routes>
     </BrowserRouter>
   );
