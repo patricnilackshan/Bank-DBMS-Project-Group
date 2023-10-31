@@ -52,6 +52,18 @@ export function Deposit() {
                                 </div>
                             </div>
 
+                            <div class="row">                               
+                            <div class="col-25">
+                                <label>Description </div>
+                                <div class="col-75">
+                                <input
+                                    type="text"
+                                    className="form-control mt-1"
+                                    placeholder="Enter description"                                     
+                                />
+                            </div>
+                        </div>
+
                             <br>
                             <div class="row">
                                 <input type="submit" value="Deposit">

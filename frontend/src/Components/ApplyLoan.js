@@ -51,6 +51,17 @@ export function ApplyLoan() {
                             </div>
                             </div>
 
+                            </div>
+                            <div class="col-75">
+                                <input
+                                    type="number"
+                                    className="form-control mt-1"
+                                    placeholder="Enter duration in months"
+                                    size="48"
+                                />
+                            </div>
+                            </div>
+
                             <div class="row">
                             <div class="col-25">
                                 <label>Password</label>
