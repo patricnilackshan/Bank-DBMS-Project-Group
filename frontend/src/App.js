@@ -39,6 +39,8 @@ import { ApproveRequest } from "./Components/ApproveRequest"
 import { ViewCustomer } from "./Components/ViewCustomer"
 import { ViewEmployee } from "./Components/ViewEmployee"
 import { ViewManager } from "./Components/ViewManager"
+import { GetCustomerEmployee } from "./Components/GetCustomerEmployee"
+import { GetCustomerManager } from "./Components/GetCustomerManager"
 
 export default function App() {
   return (
@@ -82,6 +84,8 @@ export default function App() {
         <Route path="/viewcustomer" element={<ViewCustomer />} />
         <Route path="/viewemployee" element={<ViewEmployee />} />
         <Route path="/viewmanager" element={<ViewManager />} />
+        <Route path="/getcustomeremployee" element={<GetCustomerEmployee />} />
+        <Route path="/getcustomermanager" element={<GetCustomerManager />} />
       </Routes>
     </BrowserRouter>
   );
