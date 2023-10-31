@@ -36,6 +36,9 @@ import { PhysicalTransaction } from "./Components/PhysicalTransaction"
 import { Deposit } from "./Components/DEposit"
 import { Withdrawal } from "./Components/Withdrawal"
 import { ApproveRequest } from "./Components/ApproveRequest"
+import { ViewCustomer } from "./Components/ViewCustomer"
+import { ViewEmployee } from "./Components/ViewEmployee"
+import { ViewManager } from "./Components/ViewManager"
 
 export default function App() {
   return (
@@ -76,6 +79,9 @@ export default function App() {
         <Route path="/deposit" element={<Deposit />} />
         <Route path="/withdrawal" element={<Withdrawal />} />
         <Route path="/approverequest" element={<ApproveRequest />} />
+        <Route path="/viewcustomer" element={<ViewCustomer />} />
+        <Route path="/viewemployee" element={<ViewEmployee />} />
+        <Route path="/viewmanager" element={<ViewManager />} />
       </Routes>
     </BrowserRouter>
   );

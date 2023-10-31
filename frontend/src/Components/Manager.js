@@ -12,7 +12,8 @@ export function Manager() {
                 <div class="Auth-form-container">
                     <form class="Auth-form" action="/Manager">
                         <div class="Auth-form-content">
-                            <h3 class="Auth-form-title" align="center">Welcome Back!</h3>                   
+                            <h3 class="Auth-form-title" align="center">Welcome Back!</h3>
+                            <button class="button" style="vertical-align:middle" formAction="/ViewManager"><span>Get Profile Details </span></button><br>                   
                             <button class="button" style="vertical-align:middle" formAction="/GenerateReport"><span>Generate a Report </span></button><br>
                             <button class="button" style="vertical-align:middle" formAction="/ViewRequest"><span>View Loan Requests </span></button><br>
                             <button class="button" style="vertical-align:middle" formAction="/ApproveRequest"><span>Approve Loan Requests </span></button><br>

@@ -9,10 +9,11 @@ export function Customer() {
             <meta name="viewport" content="width=device-width, initial-scale=1">
             </head>
             <body>
-                <div class="Auth-form-container">
+                <div class="Auth-form-container-big">
                     <form class="Auth-form" action="/Customer">
                         <div class="Auth-form-content">
-                            <h3 class="Auth-form-title" align="center">Welcome Back!</h3>  
+                            <h3 class="Auth-form-title" align="center">Welcome Back!</h3> 
+                            <button class="button" style="vertical-align:middle" formAction="/ViewCustomer"><span>Get Profile Details </span></button><br>  
                             <button class="button" style="vertical-align:middle" formAction="/ViewBalance"><span>Get Account Details </span></button><br>                 
                             <button class="button" style="vertical-align:middle" formAction="/Transaction"><span>Do a Transaction </span></button><br>
                             <button class="button" style="vertical-align:middle" formAction="/ApplyLoan"><span>Apply for an Online Loan </span></button><br>
