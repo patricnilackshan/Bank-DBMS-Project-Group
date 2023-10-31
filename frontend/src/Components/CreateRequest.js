@@ -31,7 +31,7 @@ export function CreateRequest() {
                                     <input
                                         type="number"
                                         className="form-control mt-1"
-                                        placeholder="Enter the account number linked with the fixed deposit"
+                                        placeholder="Enter the account number"
                                         size="48"
                                     />
                                 </div>

@@ -189,22 +189,22 @@ export function CreateEmployee() {
                                     </div>
                                 </div>
 
-                                <br />
+                                <br>
                                 <div class="row">
                                     <input type="submit" value="Submit" />
                                 </div>
 
-                                <br />
+                                <br>
 
                                 <button class="backbutton" formAction="/Admin" type="submit" color="green">
                                     <span>Back </span>
                                 </button>
-
+                                </div>
                                 </form>
                                 </div>
                                 </body>
                                 </html>
                                 `;
 
-                                return <div dangerouslySetInnerHTML={{ __html: htmlContent }} />;
-                                }
+    return <div dangerouslySetInnerHTML={{ __html: htmlContent }} />;
+}

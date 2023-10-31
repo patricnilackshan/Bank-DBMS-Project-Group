@@ -45,6 +45,10 @@ import { Statement } from "./Components/Statement"
 import { LoanDetails } from "./Components/LoanDetails"
 import { PaymentDate } from "./Components/PaymentDate"
 import { ReportHistory } from "./Components/ReportHistory"
+import { ViewBalance } from "./Components/ViewBalance"
+import { CheckInstallments } from "./Components/CheckInstallments"
+import { PayInstallment } from "./Components/PayInstallment"
+import { ViewRequest } from "./Components/ViewRequest"
 
 export default function App() {
   return (
@@ -94,6 +98,10 @@ export default function App() {
         <Route path="/loandetails" element={<LoanDetails />} />
         <Route path="/paymentdate" element={<PaymentDate />} />
         <Route path="/reporthistory" element={<ReportHistory />} />
+        <Route path="/viewbalance" element={<ViewBalance />} />
+        <Route path="/checkinstallments" element={<CheckInstallments />} />
+        <Route path="/payinstallment" element={<PayInstallment />} />
+        <Route path="/viewrequest" element={<ViewRequest />} />
       </Routes>
     </BrowserRouter>
   );
