@@ -44,6 +44,7 @@ import { GetCustomerManager } from "./Components/GetCustomerManager"
 import { Statement } from "./Components/Statement"
 import { LoanDetails } from "./Components/LoanDetails"
 import { PaymentDate } from "./Components/PaymentDate"
+import { ReportHistory } from "./Components/ReportHistory"
 
 export default function App() {
   return (
@@ -92,7 +93,7 @@ export default function App() {
         <Route path="/statement" element={<Statement />} />
         <Route path="/loandetails" element={<LoanDetails />} />
         <Route path="/paymentdate" element={<PaymentDate />} />
-
+        <Route path="/reporthistory" element={<ReportHistory />} />
       </Routes>
     </BrowserRouter>
   );
