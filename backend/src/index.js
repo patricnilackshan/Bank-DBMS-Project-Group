@@ -7,11 +7,13 @@ const mysql = require("./mysql-connector");
 // routes
 const login = require("./routes/login");
 const branches = require("./routes/branches");
+const createManager = require("./routes/create-manager");
 app.use(express.json());
 app.use(cors());
 
 app.post("/login", login);
 app.get("/branches", branches);
+app.get("/create-manager", createManager);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
