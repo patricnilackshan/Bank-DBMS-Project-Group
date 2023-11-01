@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Parts.css";
+import { backend } from "../utilities";
 
 export function CreateManager() {
+	const [branches, setBranches] = useState([]);
+	
+	useEffect(() => {
+		backend("/branches").then(data => {
+			if (typeof data == "string") {
+				console.error(data);return;
+			}
+			setBranches(data);
+		})
+	}, []);
 
 	return (
 		<div className="Auth-form-container-big">
@@ -44,11 +55,9 @@ export function CreateManager() {
 						<div className="col-75">
 							<select id="branch" name="branch">
 								<option value="none">Choose an option</option>
-								<option value="anseboileau">Anse Boileau</option>
-								<option value="glacis">Glacis</option>
-								<option value="plaisance">Plaisance</option>
-								<option value="Takamaka">Takamaka</option>
-								<option value="victoria">Victoria</option>
+								{branches.map((branch) => {
+									return <option value={branch.branch_id} key={branch.branch_id}>{branch.branch_name}</option>
+								})}
 							</select>
 						</div>
 					</div>
