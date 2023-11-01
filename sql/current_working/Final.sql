@@ -229,7 +229,7 @@ CREATE TABLE loan_request (
     account_number int NOT NULL,
     branch_id int UNSIGNED NOT NULL,
     is_approved boolean NOT NULL DEFAULT FALSE,
-    loan_amount numeric(10,2) NOT NULL,
+    loan_amount numeric(8,2) NOT NULL,
     loan_type enum('Business', 'Personal') NOT NULL,
     PRIMARY KEY (request_id),
     FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
@@ -403,7 +403,7 @@ INSERT INTO account VALUES
   (5000293, 10004, 1002, 103050.00,'2018-12-24', 'Active', 'Saving', 2 ),
   (9340000, 10005, 1001, 350750.00,'2020-04-11', 'Active', 'Saving', 3 ),
   (1837927, 10006, 1002, 100.00,'2020-08-04', 'Suspended', 'Checking', 3 ),
-  (6400022, 10007, 1004, 0.00,'2020-11-15', 'Closed', 'Saving', 4 ),
+  (6400022, 10007, 1004, 250000.00,'2020-11-15', 'Active', 'Saving', 4 ),
   (7223913, 10008, 1003, 120000.00,'2020-12-31', 'Active', 'Checking', 14 ),
   (1234567, 10009, 1005, 1030500.00,'2021-05-11', 'Active', 'Checking', 7 ),
   (9876543, 10010, 1004, 0.00,'2021-06-23', 'Closed', 'Saving', 5 ),
@@ -451,10 +451,11 @@ INSERT INTO fd_plan VALUES
   (7003, 0.15, 36);
 
 INSERT INTO fd VALUES
-  (123456, 7001, 2300021, 1004, '2023-08-11', '2023-11-11', 1000000.00, 'Active', '2024-02-11'),
-  (400050, 7002, 5000293, 1001, '2022-05-20', NULL, 250000.00, 'Matured', '2023-05-20'),
-  (983400, 7003, 9340000, 1003, '2020-06-29', NULL, 3000000.00, 'Withdrawn', '2023-06-29'),
-  (720043, 7002, 6003002, 1005, '2023-04-05', '2023-11-05', 475000.00, 'Active', '2026-04-05');
+  (123456, 1, 2300021, 1004, '2023-08-11', '2023-11-11', 1000000.00, 'Active', '2024-02-11'),
+  (400050, 2, 5000293, 1001, '2022-05-20', NULL, 250000.00, 'Matured', '2023-05-20'),
+  (983400, 3, 9340000, 1002, '2020-06-29', NULL, 3000000.00, 'Withdrawn', '2023-06-29'),
+  (720043, 2, 6003002, 1005, '2023-04-05', '2023-11-05', 475000.00, 'Active', '2026-04-05'),
+  (567229, 1, 6400028, 1003, '2023-10-01', '2023-11-01', 550000.00, 'Active', '2024-04-01');
 
 INSERT INTO transaction VALUES
   (970001, 5000.00, 'Deposit', 'Mahapola', '2023-08-04 23:10:10'),
@@ -501,11 +502,11 @@ INSERT INTO online_loan VALUES (90006, 123456), (90007, 720043);
 
 INSERT INTO loan_request VALUES
   (70001, 10004, 5000293, 1001, TRUE, 100000.00, 'Personal'),
-  (70002, 10009, 1234567, 1004, FALSE, 5000000.00, 'Business'),
+  (70002, 10009, 1234567, 1004, FALSE, 500000.00, 'Business'),
   (70003, 10016, 6059430, 1005, TRUE, 200000.00, 'Personal'),
   (70004, 10010, 9876543, 1003, FALSE, 300000.00, 'Personal'),
   (70005, 10002, 1002734, 1001, TRUE, 400000.00, 'Business'),
-  (70006, 10007, 6400022, 1003, FALSE, 3000000.00, 'Business'),
+  (70006, 10007, 6400022, 1003, FALSE, 300000.00, 'Business'),
   (70007, 10017, 2234649, 1004, TRUE, 200000.00, 'Personal'),
   (70008, 10003, 6400028, 1002, TRUE, 250000.00, 'Personal');
 
@@ -967,7 +968,7 @@ END //
 DROP PROCEDURE IF EXISTS generate_offline_loan_request//
 CREATE PROCEDURE generate_offline_loan_request(
     IN accountnumber INT,
-    IN loanamount NUMERIC(10,2),
+    IN loanamount NUMERIC(8,2),
     IN loantype ENUM('Business', 'Personal'),
     IN username VARCHAR(50)
 )
@@ -1027,6 +1028,7 @@ BEGIN
     DECLARE customerid INT;
     DECLARE loanid INT;
     DECLARE accountnumber INT;
+    DECLARE loanamount NUMERIC(8,2);
 
     -- Get the branch_id based on the manager's username
     SELECT branch_id INTO branchid
@@ -1043,6 +1045,11 @@ BEGIN
     FROM loan_request
     WHERE request_id = requestid;
 
+    -- Get the loan_amount based on the request_id
+    SELECT loan_amount INTO loanamount
+    FROM loan_request
+    WHERE request_id = requestid;
+
     -- Update the loan request record
     UPDATE loan_request
     SET is_approved = isapproved
@@ -1052,10 +1059,7 @@ BEGIN
     IF isapproved THEN
         -- Insert record into loan table
         INSERT INTO loan (customer_id, account_number, branch_id, loan_type, loan_amount, sanction_date, final_payment_date)
-        VALUES (customerid, accountnumber, branchid, (SELECT loan_type FROM loan_request WHERE request_id = requestid), (SELECT loan_amount FROM loan_request WHERE request_id = requestid), CURDATE(), DATE_ADD(CURDATE(), INTERVAL duration MONTH));
-
-        -- deposit the loan amount
-        CALL deposit_loan_amount(accountnumber);
+        VALUES (customerid, accountnumber, branchid, (SELECT loan_type FROM loan_request WHERE request_id = requestid), loanamount, CURDATE(), DATE_ADD(CURDATE(), INTERVAL duration MONTH));
 
         -- Get the loan_id
         SELECT LAST_INSERT_ID() INTO loanid;
@@ -1067,6 +1071,9 @@ BEGIN
         -- Insert loan installments
         INSERT INTO loan_installment (loan_id, amount, due_date)
         VALUES (loanid, (SELECT loan_amount FROM loan_request WHERE request_id = requestid) / duration, DATE_ADD(CURDATE(), INTERVAL 1 MONTH));
+
+        -- deposit the loan amount
+        CALL deposit_loan_amount(accountnumber, loanamount);
     END IF;   
 END //
 
@@ -1074,7 +1081,7 @@ DROP PROCEDURE IF EXISTS customer_applied_loan//
 CREATE PROCEDURE customer_applied_loan(
     IN username VARCHAR(50),
     IN accountnumber INT,
-    IN loanamount NUMERIC(10,2),
+    IN loanamount NUMERIC(8,2),
     IN loantype ENUM('Business', 'Personal'),
     IN duration INT
 )
@@ -1094,9 +1101,6 @@ BEGIN
     INSERT INTO loan (customer_id, account_number, branch_id, loan_type, loan_amount, sanction_date, final_payment_date)
     VALUES (customerid, accountnumber, branchid, loantype, loanamount, CURDATE(), DATE_ADD(CURDATE(), INTERVAL duration MONTH));
 
-    -- deposit the loan amount
-    CALL deposit_loan_amount(accountnumber);
-
     -- Get the loan_id
     SELECT LAST_INSERT_ID() INTO loanid;
 
@@ -1112,6 +1116,9 @@ BEGIN
     -- Insert loan installments
     INSERT INTO loan_installment (loan_id, amount, due_date)
     VALUES (loanid, loanamount / duration, DATE_ADD(CURDATE(), INTERVAL 1 MONTH));
+
+    -- deposit the loan amount
+    CALL deposit_loan_amount(accountnumber, loanamount);
 END //
 
 DROP PROCEDURE IF EXISTS update_loan_installment_payment_date//
@@ -1177,16 +1184,15 @@ END //
 
 DROP PROCEDURE IF EXISTS deposit_loan_amount//
 CREATE PROCEDURE deposit_loan_amount(
-    IN accountnumber INT
+    IN accountnumber INT,
+    IN loanamount NUMERIC(8,2)
 )
 BEGIN
     DECLARE transactionid INT;
 
     -- Insert record into transaction table
     INSERT INTO transaction (amount, transaction_type, description, time_stamp)
-    VALUES ((SELECT loan_amount
-            FROM loan
-            WHERE account_number = accountnumber), 'Deposit', 'Loan Sanctioned', NOW());
+    VALUES (loanamount, 'Deposit', 'Loan Sanctioned', NOW());
 
     -- Get the transaction_id
     SELECT LAST_INSERT_ID() INTO transactionid;
