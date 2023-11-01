@@ -49,8 +49,15 @@ import { ViewBalance } from "./Components/ViewBalance"
 import { CheckInstallments } from "./Components/CheckInstallments"
 import { PayInstallment } from "./Components/PayInstallment"
 import { ViewRequest } from "./Components/ViewRequest"
+import { useEffect, useState } from "react"
 
 export default function App() {
+  const [username, setUsername] = useState("");
+  
+  useEffect(() => {
+    console.log("global username", username);
+  }, [username]);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -58,13 +65,13 @@ export default function App() {
         <Route path="/passwordreset" element={<PasswordReset />} />
         <Route path="/manager" element={<Manager />} />
         <Route path="/createemployee" element={<CreateEmployee />} />
-        <Route path="/generatereport" element={<GenerateReport />} />
+        <Route path="/generatereport" element={<GenerateReport username={username} />} />
         <Route path="/employee" element={<Employee />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/createmanager" element={<CreateManager />} />
         <Route path="/selectuser" element={<SelectUser />} />
         <Route path="/adminauth" element={<AdminAuth />} />
-        <Route path="/auth" element={<Auth />} />
+        <Route path="/auth" element={<Auth setGlobalUsername={setUsername} />} />
         <Route path="/customer" element={<Customer />} />
         <Route path="/customerauth" element={<CustomerAuth />} />
         <Route path="/employeeauth" element={<EmployeeAuth />} />
