@@ -9,54 +9,65 @@ const mysql = require("../mysql-connector");
  * @returns whether the response has been sent
  */
 function checkLogin(response, username, password, loginType) {
-	let query = undefined;
-	if (loginType == "Admin") {
-		query = `SELECT * FROM web_platform_user WHERE user_name = ?`;
-	} else if (loginType == "Customer") {
-		query = `SELECT * FROM web_platform_user WHERE user_name = ?`;
-	} else if (loginType == "Employee") {
-		query = `SELECT * FROM employee WHERE user_name = ? AND position = 'Staff'`;
-	} else if (loginType == "Manager") {
-		query = `SELECT * FROM employee WHERE user_name = ? AND position = 'Manager'`;
-	}
-
-	if (query == undefined) {
-		response.status(500).send("Internal server error occured");
-		return true;
-	}
-
 	return new Promise((resolve) => {
-		mysql.query(query, [username], (error, results) => {
-			if (error) {
-				response.status(500).send("Internal server error occured");
-				resolve(true);
-				return;
-			}
-			const user = results[0];
-			if (typeof user == "undefined") {
-				resolve(false);
-				return;
-			}
-
-			bcrypt.compare(password, user.password_hash, (err, result) => {
-				if (err) {
-					console.error(err);
+		mysql.query(
+			`SELECT * FROM web_platform_user AS wpu
+			LEFT JOIN employee
+			ON employee.user_name = wpu.user_name
+			WHERE wpu.user_name = ?`,
+			[username],
+			(error, results) => {
+				if (error) {
+					console.error(error);
 					response.status(500).send("Internal server error occured");
 					resolve(true);
 					return;
 				}
-
-				if (result == false) {
-					response.status(400).send("Invalid credentials");
-					resolve(true);
+				const user = results[0];
+				console.log(user);
+				if (typeof user == "undefined") {
+					console.log("not found");
+					resolve(false);
 					return;
 				}
 
-				delete user.password_hash;
-				response.status(200).send(user);
-				resolve(true);
-			});
-		});
+				const isManager =
+					user.position == "Manager" || user.position == "Head_Manager";
+				const isInvalidCredentials =
+					user.status == "Retired" ||
+					(loginType == "Admin" && user.user_name != "admin") ||
+					(loginType != "Admin" && user.user_name == "admin") ||
+					((loginType == "Employee" || loginType == "Manager") &&
+						user.status != "Active") ||
+					(loginType == "Employee" && user.position != "Staff") ||
+					(loginType == "Manager" && !isManager) ||
+					(loginType != "Manager" && isManager);
+					
+				if (isInvalidCredentials) {
+					resolve(false);
+					return;
+				}
+
+				bcrypt.compare(password, user.password_hash, (err, result) => {
+					if (err) {
+						console.error(err);
+						response.status(500).send("Internal server error occured");
+						resolve(true);
+						return;
+					}
+
+					if (result == false) {
+						response.status(400).send("Invalid credentials");
+						resolve(true);
+						return;
+					}
+
+					delete user.password_hash;
+					response.status(200).send(user);
+					resolve(true);
+				});
+			}
+		);
 	});
 }
 
