@@ -3,8 +3,13 @@ const cors = require("cors");
 
 const app = express();
 const mysql = require("./mysql-connector");
+
+// routes
+const login = require("./routes/login");
 app.use(express.json());
 app.use(cors());
+
+app.post("/login", login);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
