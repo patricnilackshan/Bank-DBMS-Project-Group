@@ -315,7 +315,7 @@ INSERT INTO web_platform_user VALUES
 'alicejones@gmail.com', 
 '2023-11-28 13:15:45'),
 ('admin',
-'$2b$12$YlM/cibRsTWl2U.SmyTnhe3rd6bIgYBvNx3.e.rsAlRG0xT1oRdpu',
+"$2b$10$o9ZaqokwN4eBEjDjWYD7/uRCWFl/.CHbz4ykdTHFaLyzUzJoB1QaK",
 'admin@gmail.com',
 '2023-11-01 01:10:20'
 );
