@@ -11,7 +11,7 @@ const mysql = require("../mysql-connector");
 function checkLogin(response, username, password, loginType) {
 	let query = undefined;
 	if (loginType == "Admin") {
-		// TODO
+		query = `SELECT * FROM web_platform_user WHERE user_name = ?`;
 	} else if (loginType == "Customer") {
 		query = `SELECT * FROM web_platform_user WHERE user_name = ?`;
 	} else if (loginType == "Employee") {
@@ -38,7 +38,7 @@ function checkLogin(response, username, password, loginType) {
 				return;
 			}
 
-			bcrypt.compare(password, user.Password, (err, result) => {
+			bcrypt.compare(password, user.password_hash, (err, result) => {
 				if (err) {
 					console.error(err);
 					response.status(500).send("Internal server error occured");
@@ -52,7 +52,7 @@ function checkLogin(response, username, password, loginType) {
 					return;
 				}
 
-				delete user.Password;
+				delete user.password_hash;
 				response.status(200).send(user);
 				resolve(true);
 			});
@@ -61,10 +61,10 @@ function checkLogin(response, username, password, loginType) {
 }
 
 async function handler(request, response) {
-	const { emailAddress, password, type } = request.body;
+	const { username, password, type } = request.body;
 
 	if (
-		typeof emailAddress != "string" ||
+		typeof username != "string" ||
 		typeof password != "string" ||
 		typeof type != "string"
 	) {
@@ -82,7 +82,7 @@ async function handler(request, response) {
 	}
 
 	let responseSent = false;
-	responseSent = await checkLogin(response, emailAddress, password, type);
+	responseSent = await checkLogin(response, username, password, type);
 	if (responseSent) {
 		return;
 	}
