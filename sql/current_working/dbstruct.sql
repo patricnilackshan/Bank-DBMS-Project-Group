@@ -229,7 +229,7 @@ CREATE TABLE loan_request (
     account_number int NOT NULL,
     branch_id int UNSIGNED NOT NULL,
     is_approved boolean NOT NULL DEFAULT FALSE,
-    loan_amount numeric(10,2) NOT NULL,
+    loan_amount numeric(8,2) NOT NULL,
     loan_type enum('Business', 'Personal') NOT NULL,
     PRIMARY KEY (request_id),
     FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
