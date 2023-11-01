@@ -6,10 +6,12 @@ const mysql = require("./mysql-connector");
 
 // routes
 const login = require("./routes/login");
+const branches = require("./routes/branches");
 app.use(express.json());
 app.use(cors());
 
 app.post("/login", login);
+app.get("/branches", branches);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
