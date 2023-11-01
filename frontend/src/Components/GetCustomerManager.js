@@ -1,23 +1,16 @@
 import React from 'react';
-import "./Parts.css"
+import './Parts.css';
 
 export function GetCustomerManager() {
-    const htmlContent = `
-        <!DOCTYPE html>
-        <html>
-            <body>
-                <div class="Auth-form-container">
-                    <form class="Auth-form">
-                        <div class="Auth-form-content">
-
-                            <button class="backbutton" style="vertical-align:middle" formAction="/Manager"><span>Back </span></button>
-                                                        
-                        </div>
-                    </form>
+    return (
+        <div className="Auth-form-container">
+            <form className="Auth-form">
+                <div className="Auth-form-content">
+                    <button className="backbutton" style={{ verticalAlign: 'middle' }} formAction="/Manager">
+                        <span>Back</span>
+                    </button>
                 </div>
-            </body>
-        </html>
-    `;
-
-    return <div dangerouslySetInnerHTML={{ __html: htmlContent }} />;
+            </form>
+        </div>
+    );
 }

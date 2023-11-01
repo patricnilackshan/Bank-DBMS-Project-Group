@@ -1,23 +1,16 @@
 import React from 'react';
-import "./Parts.css"
+import './Parts.css';
 
 export function LoanDetails() {
-    const htmlContent = `
-        <!DOCTYPE html>
-        <html>
-            <body>
-                <div class="Auth-form-container">
-                    <form class="Auth-form" action="/Employee">
-                        <div class="Auth-form-content">
-
-                            <button class="backbutton" style="vertical-align:middle" formAction="/Employee"><span>Back </span></button>
-                                                        
-                        </div>
-                    </form>
+    return (
+        <div className="Auth-form-container">
+            <form className="Auth-form" action="/Employee">
+                <div className="Auth-form-content">
+                    <button className="backbutton" style={{ verticalAlign: 'middle' }} formAction="/Employee">
+                        <span>Back</span>
+                    </button>
                 </div>
-            </body>
-        </html>
-    `;
-
-    return <div dangerouslySetInnerHTML={{ __html: htmlContent }} />;
+            </form>
+        </div>
+    );
 }
