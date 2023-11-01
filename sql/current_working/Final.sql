@@ -311,7 +311,15 @@ INSERT INTO web_platform_user VALUES
   ('R2D2C3','0318400df94db0c703c690fe242aef19ced566f92ecaa74266e8171e8b852e26', 'drakeco@gmail.com', '2023-08-19 10:45:35'),
   ('BD3200','e5341b91ddd72946e057da5ebf88066967d1162e743e0cbd3adf2f19b42ef3b5', 'jimmywilliams@gmail.com', '2023-06-15 11:28:35'),
   ('JH78Y49','b247ce37032b81b855b721981c9d06fd5af2a47c2cb359e2e0d272f7f1eaaa21', 'annemiller@gmail.com', '2023-10-17 09:46:56'),
-  ('00H2P3','d7155458c9791b951e5d54f62aa3fe536e920dd0ba53151758b3013ef7de0cb6', 'alicejones@gmail.com', '2023-11-28 13:15:45');
+  ('00H2P3','d7155458c9791b951e5d54f62aa3fe536e920dd0ba53151758b3013ef7de0cb6', 
+'alicejones@gmail.com', 
+'2023-11-28 13:15:45'),
+('admin',
+'$2b$12$YlM/cibRsTWl2U.SmyTnhe3rd6bIgYBvNx3.e.rsAlRG0xT1oRdpu',
+'admin@gmail.com',
+'2023-11-01 01:10:20'
+);
+-- admin password == "password"
 
 INSERT INTO branch VALUES
   (1001, 'Anse Boileau', '1234567890', '123, Main Street, Anse Boileau, Seychelles', 'anseboileau@abank.com'),
