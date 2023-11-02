@@ -73,7 +73,7 @@ export default function App() {
         <Route path="/adminauth" element={<AdminAuth />} />
         <Route path="/auth" element={<Auth setGlobalUsername={setUsername} />} />
         <Route path="/customer" element={<Customer />} />
-        <Route path="/customerauth" element={<CustomerAuth />} />
+        <Route path="/customerauth" element={<CustomerAuth setGlobalUsername={setUsername} />} />
         <Route path="/employeeauth" element={<EmployeeAuth />} />
         <Route path="/passwordresetadmin" element={<PasswordResetAdmin />} />
         <Route path="/passwordresetcustomer" element={<PasswordResetCustomer />} />
@@ -87,7 +87,7 @@ export default function App() {
         <Route path="/chooseaccount" element={<ChooseAccount />} />
         <Route path="/createsavings" element={<CreateSavings />} />
         <Route path="/createcurrent" element={<CreateCurrent />} />
-        <Route path="/transaction" element={<Transaction />} />
+        <Route path="/transaction" element={<Transaction username={username} />}  />
         <Route path="/applyloan" element={<ApplyLoan />} />
         <Route path="/createrequest" element={<CreateRequest />} />
         <Route path="/createfd" element={<CreateFD />} />

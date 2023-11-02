@@ -1,81 +1,135 @@
-import React from 'react';
-import './Parts.css';
+import React, { useState } from "react";
+import "./Parts.css";
+import { useNavigate } from "react-router-dom";
+import { backend } from "../utilities";
 
-export function Transaction() {
-  return (
-    <div className="Auth-form-container">
-      <form className="Auth-form" action="/Customer">
-        <div className="Auth-form-content">
-          <h3 className="Auth-form-title" align="center">Enter the Details</h3>
+export function Transaction({username}) {
+	const [transactionInfo, setTransactionInfo] = useState({
+		fromAccount: "2353560",
+		toAccount: "1002734",
+		amount: "1000",
+		password: "password",
+	});
+	const [error, setError] = useState("");
+	const navigate = useNavigate();
 
-          <div className="row">
-            <div className="col-25">
-              <label>From</label>
-            </div>
-            <div className="col-75">
-              <input
-                type="number"
-                className="form-control mt-1"
-                placeholder="Enter your account number"
-                size="48"
-              />
-            </div>
-          </div>
+	const handleInputChange = (e) => {
+		const { name, value } = e.target;
+		setTransactionInfo({
+			...transactionInfo,
+			[name]: value,
+		});
+	};
 
-          <div className="row">
-            <div className="col-25">
-              <label>To</label>
-            </div>
-            <div className="col-75">
-              <input
-                type="number"
-                className="form-control mt-1"
-                placeholder="Enter the recipient's account number"
-                size="48"
-              />
-            </div>
-          </div>
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		backend("/transaction", {
+			method: "POST",
+			body: {...transactionInfo, username},
+		}).then((data) => {
+			if (typeof data == "string") {
+				setError(data);
+				return;
+			}
+			setTimeout(() => {
+				navigate(-1);
+			}, 2000);
+		});
+	};
 
-          <div className="row">
-            <div className="col-25">
-              <label>Amount</label>
-            </div>
-            <div className="col-75">
-              <input
-                type="number"
-                className="form-control mt-1"
-                placeholder="Enter amount in SCR"
-                min="1000"
-                max="999999"
-              />
-            </div>
-          </div>
+	return (
+		<div className="Auth-form-container">
+			<form className="Auth-form" onSubmit={handleSubmit}>
+				<div className="Auth-form-content">
+					<h3 className="Auth-form-title" align="center">
+						Enter the Details
+					</h3>
 
-          <div className="row">
-            <div className="col-25">
-              <label>Password</label>
-            </div>
-            <div className="col-75">
-              <input
-                type="password"
-                className="form-control mt-1"
-                placeholder="Enter your password"
-                size="48"
-              />
-            </div>
-          </div>
+					<div className="row">
+						<div className="col-25">
+							<label>From</label>
+						</div>
+						<div className="col-75">
+							<input
+								type="number"
+								className="form-control mt-1"
+								placeholder="Enter your account number"
+								size="48"
+								name="fromAccount"
+								value={transactionInfo.fromAccount}
+								onChange={handleInputChange}
+							/>
+						</div>
+					</div>
 
-          <br />
+					<div className="row">
+						<div className="col-25">
+							<label>To</label>
+						</div>
+						<div className="col-75">
+							<input
+								type="number"
+								className="form-control mt-1"
+								placeholder="Enter the recipient's account number"
+								size="48"
+								name="toAccount"
+								value={transactionInfo.toAccount}
+								onChange={handleInputChange}
+							/>
+						</div>
+					</div>
 
-          <div className="row">
-            <input type="submit" value="Send" />
-          </div>
+					<div className="row">
+						<div className="col-25">
+							<label>Amount</label>
+						</div>
+						<div className="col-75">
+							<input
+								type="number"
+								className="form-control mt-1"
+								placeholder="Enter amount in SCR"
+								min="1000"
+								max="999999"
+								name="amount"
+								value={transactionInfo.amount}
+								onChange={handleInputChange}
+							/>
+						</div>
+					</div>
 
-          <button className="backbutton" style={{ verticalAlign: 'middle' }} formAction="/Customer">
-            <span>Back</span>
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+					<div className="row">
+						<div className="col-25">
+							<label>Password</label>
+						</div>
+						<div className="col-75">
+							<input
+								type="password"
+								className="form-control mt-1"
+								placeholder="Enter your password"
+								size="48"
+								name="password"
+								value={transactionInfo.password}
+								onChange={handleInputChange}
+							/>
+						</div>
+					</div>
+
+					<br />
+					{error == "" ? null : <div>{error}</div>}
+
+					<div className="row">
+						<input type="submit" value="Send" />
+					</div>
+
+					<button
+						className="backbutton"
+						style={{ verticalAlign: "middle" }}
+						formAction="/Customer"
+					>
+						<span>Back</span>
+					</button>
+				</div>
+			</form>
+		</div>
+	);
 }

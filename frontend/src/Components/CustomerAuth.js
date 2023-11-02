@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Parts.css";
 import { backend } from "../utilities";
 
-export default function (props) {
+export default function ({ setGlobalUsername }) {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [loginError, setLoginError] = useState("");
@@ -47,22 +47,23 @@ export default function (props) {
 							formAction="/Customer"
 							type="submit"
 							className="btn btn-primary"
-              onClick={event => {
+							onClick={(event) => {
                 event.preventDefault();
                 backend("/login", {
                   method: "POST",
                   body: {
                     username,
                     password,
-                    type: "Customer"
-                  }
+										type: "Customer",
+									},
                 }).then((data) => {
 									if (typeof data == "string") {
 										setLoginError(data);
 										return;
 									}
+									setGlobalUsername(data.user_name);
 									navigate("/Customer");
-                })
+								});
               }}
 						>
 							Submit

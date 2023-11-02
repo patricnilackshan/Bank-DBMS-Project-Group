@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Parts.css";
 
 export function Customer() {
@@ -25,13 +26,11 @@ export function Customer() {
 						<span>Get Account Details </span>
 					</button>
 					<br />
-					<button
-						className="button"
-						style={{ verticalAlign: "middle" }}
-						formAction="/Transaction"
-					>
-						<span>Do a Transaction </span>
-					</button>
+					<Link to="/Transaction">
+						<button className="button" style={{ verticalAlign: "middle" }}>
+							<span>Do a Transaction </span>
+						</button>
+					</Link>
 					<br />
 					<button
 						className="button"

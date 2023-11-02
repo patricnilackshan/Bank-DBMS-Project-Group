@@ -18,7 +18,7 @@ app.post("/login", login);
 app.get("/branches", branches);
 app.post("/create-employee", createEmployee);
 app.get("/generate-report", generateReport);
-app.get("/transaction", transaction);
+app.post("/transaction", transaction);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
