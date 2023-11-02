@@ -7,12 +7,13 @@ const mysql = require("../mysql-connector");
 async function handler(request, response) {
 	const { username, startDate, endDate, type } = request.query;
 
+	console.log({ username, startDate, endDate });
 	if (
 		typeof username != "string" ||
 		typeof startDate != "string" ||
 		typeof endDate != "string"
 	) {
-		response.status(400).send("Unrecognized flightId parameter");
+		response.status(400).send("Not all requried parameters are provided");
 		return;
 	}
 	let procedureName = undefined;
