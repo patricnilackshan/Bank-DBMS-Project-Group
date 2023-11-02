@@ -119,6 +119,32 @@ export function GenerateReport({ username }) {
 					</button>
 				</div>
 			</form>
+			
+			{reportItems.length == 0 ? null : 
+			<table className="table table-striped">
+				<tr>
+					<th>Account Number</th>
+					<th>Customer Name</th>
+					<th>Transaction Type</th>
+					<th>Description</th>
+					<th>Timestamp</th>
+					<th>Amount</th>
+				</tr>
+				{reportItems.map(item => {
+					return <tr>
+						<td>{item["Account Number"]}</td>
+						<td>{item["Customer Name"]}</td>
+						<td>{item["Transaction Type"]}</td>
+						<td>{item["Description"]}</td>
+						<td>{item["Time Stamp"]}</td>
+						<td>{item["Amount"]}</td>
+					</tr>
+
+				})}
+
+			</table>
+			}
+
 		</div>
 	);
 }
