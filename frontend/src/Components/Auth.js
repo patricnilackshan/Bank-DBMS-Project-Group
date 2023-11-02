@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { backend } from "../utilities";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function ({setGlobalUsername}) {
 	const [username, setUsername] = useState("");
@@ -40,6 +40,8 @@ export default function ({setGlobalUsername}) {
 						/>
 					</div>
 
+					{loginError == "" ? null : <div>{loginError}</div>}
+
 					<div className="d-grid gap-2 mt-3">
 						<button
 							onClick={(event) => {
@@ -56,7 +58,7 @@ export default function ({setGlobalUsername}) {
 										setLoginError(data);
 										return;
 									}
-									console.log(data.user_name,username);
+									setLoginError("");
 									setGlobalUsername(username);
 									navigate("/Manager");
 								});
@@ -68,17 +70,16 @@ export default function ({setGlobalUsername}) {
 						</button>
 					</div>
 
-					{loginError == "" ? null : <div>{loginError}</div>}
-
 					<div className="d-grid gap-2 mt-3">
+						<Link to="/">
 						<button
 							className="backbutton-small"
 							style={{ verticalAlign: "middle" }}
-							formAction="/"
-							type="submit"
+								type="button"
 						>
 							<span>Back </span>
 						</button>
+						</Link>
 					</div>
 
 					<p className="forgot-password text-mid mt-3" align="center">

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { backend } from "../utilities";
 import "./Parts.css";
 
@@ -38,16 +39,17 @@ export function GenerateReport({ username }) {
 		}
 		backend("/generate-report", {
 			body: { ...reportDetails, username },
-		}).then(data => {
+		}).then((data) => {
 			if (typeof data == "string") {
-				setError(data);return;
+				setError(data);
+				return;
 			}
 			setReportItems(data);
 		});
 	};
 
 	return (
-		<div className="Auth-form-container" style={{flexDirection: "column"}}>
+		<div className="Auth-form-container" style={{ flexDirection: "column" }}>
 			<form className="Auth-form" action="/Manager">
 				<div className="Auth-form-content">
 					<h3 className="Auth-form-title" align="center">
@@ -110,18 +112,19 @@ export function GenerateReport({ username }) {
 					<div className="row">
 						<input type="submit" value="Generate" onClick={submit} />
 					</div>
-					<button
-						className="backbutton"
-						style={{ verticalAlign: "middle" }}
-						formAction="/Manager"
-					>
+					<Link to="/Manager">
+						<button className="backbutton" style={{ verticalAlign: "middle" }}>
 						<span>Back </span>
 					</button>
+					</Link>
 				</div>
 			</form>
 			
-			{reportItems.length == 0 ? null : 
-			<table className="table table-striped" style={{backgroundColor: "#1194e2f2", }}>
+			{reportItems.length == 0 ? null : (
+				<table
+					className="table table-striped"
+					style={{ backgroundColor: "#1194e2f2" }}
+				>
 				<tr>
 					<th>Account Number</th>
 					<th>Customer Name</th>
@@ -130,8 +133,9 @@ export function GenerateReport({ username }) {
 					<th>Timestamp</th>
 					<th>Amount</th>
 				</tr>
-				{reportItems.map(item => {
-					return <tr>
+					{reportItems.map((item) => {
+						return (
+							<tr>
 						<td>{item["Account Number"]}</td>
 						<td>{item["Customer Name"]}</td>
 						<td>{item["Transaction Type"]}</td>
@@ -139,12 +143,10 @@ export function GenerateReport({ username }) {
 						<td>{item["Time Stamp"]}</td>
 						<td>{item["Amount"]}</td>
 					</tr>
-
+						);
 				})}
-
 			</table>
-			}
-
+			)}
 		</div>
 	);
 }

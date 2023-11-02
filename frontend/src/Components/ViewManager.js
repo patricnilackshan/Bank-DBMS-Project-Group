@@ -1,16 +1,19 @@
-import React from 'react';
-import './Parts.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import "./Parts.css";
 
 export function ViewManager() {
-  return (
-    <div className="Auth-form-container">
-      <form className="Auth-form" action="/Manager">
-        <div className="Auth-form-content">
-          <button className="backbutton" style={{ verticalAlign: 'middle' }} formAction="/Manager">
-            <span>Back</span>
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+	return (
+		<div className="Auth-form-container">
+			<form className="Auth-form">
+				<div className="Auth-form-content">
+					<Link to="/Manager">
+						<button className="backbutton" style={{ verticalAlign: "middle" }}>
+							<span>Back</span>
+						</button>
+					</Link>
+				</div>
+			</form>
+		</div>
+	);
 }

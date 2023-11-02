@@ -10,13 +10,11 @@ export function Manager() {
 					<h3 className="Auth-form-title" align="center">
 						Welcome Back!
 					</h3>
-					<button
-						className="button"
-						style={{ verticalAlign: "middle" }}
-						formAction="/ViewManager"
-					>
-						<span>Get Profile Details </span>
-					</button>
+					<Link to="/ViewManager">
+						<button className="button" style={{ verticalAlign: "middle" }}>
+							<span>Get Profile Details </span>
+						</button>
+					</Link>
 					<br />
 					<Link to="/GenerateReport">
 						<button className="button" style={{ verticalAlign: "middle" }}>
@@ -24,37 +22,29 @@ export function Manager() {
 						</button>
 					</Link>
 					<br />
-					<button
-						className="button"
-						style={{ verticalAlign: "middle" }}
-						formAction="/ViewRequest"
-					>
-						<span>View Loan Requests </span>
-					</button>
+					<Link to="/ViewRequest">
+						<button className="button" style={{ verticalAlign: "middle" }}>
+							<span>View Loan Requests </span>
+						</button>
+					</Link>
 					<br />
-					<button
-						className="button"
-						style={{ verticalAlign: "middle" }}
-						formAction="/ApproveRequest"
-					>
-						<span>Approve Loan Requests </span>
-					</button>
+					<Link to="/ApproveRequest">
+						<button className="button" style={{ verticalAlign: "middle" }}>
+							<span>Approve Loan Requests </span>
+						</button>
+					</Link>
 					<br />
-					<button
-						className="button"
-						style={{ verticalAlign: "middle" }}
-						formAction="/GetCustomerManager"
-					>
-						<span>Get Customer Details </span>
-					</button>
+					<Link to="/GetCustomerManager">
+						<button className="button" style={{ verticalAlign: "middle" }}>
+							<span>Get Customer Details </span>
+						</button>
+					</Link>
 					<br />
-					<button
-						className="button"
-						style={{ verticalAlign: "middle" }}
-						formAction="/"
-					>
-						<span>Log Out</span>
-					</button>
+					<Link to="/">
+						<button className="button" style={{ verticalAlign: "middle" }}>
+							<span>Log Out</span>
+						</button>
+					</Link>
 				</div>
 			</form>
 		</div>
