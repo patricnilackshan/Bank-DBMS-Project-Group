@@ -3,8 +3,8 @@ import { backend } from "../utilities";
 import { useNavigate } from "react-router-dom";
 
 export default function ({setGlobalUsername}) {
-	const [username, setUsername] = useState("BR03M2");
-	const [password, setPassword] = useState("password");
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
 	const [loginError, setLoginError] = useState("");
 
 	const navigate = useNavigate();
