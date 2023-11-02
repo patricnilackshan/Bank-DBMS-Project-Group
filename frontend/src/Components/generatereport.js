@@ -4,9 +4,9 @@ import "./Parts.css";
 
 export function GenerateReport({ username }) {
 	const [reportDetails, setReportDetails] = useState({
-		type: "transreport",
-		startDate: "2023-01-01",
-		endDate: "2023-11-01",
+		type: "",
+		startDate: "",
+		endDate: "",
 	});
 	const [error, setError] = useState("");
 	const [reportItems, setReportItems] = useState([]);
@@ -47,7 +47,7 @@ export function GenerateReport({ username }) {
 	};
 
 	return (
-		<div className="Auth-form-container">
+		<div className="Auth-form-container" style={{flexDirection: "column"}}>
 			<form className="Auth-form" action="/Manager">
 				<div className="Auth-form-content">
 					<h3 className="Auth-form-title" align="center">
@@ -121,7 +121,7 @@ export function GenerateReport({ username }) {
 			</form>
 			
 			{reportItems.length == 0 ? null : 
-			<table className="table table-striped">
+			<table className="table table-striped" style={{backgroundColor: "#1194e2f2", }}>
 				<tr>
 					<th>Account Number</th>
 					<th>Customer Name</th>
@@ -135,7 +135,7 @@ export function GenerateReport({ username }) {
 						<td>{item["Account Number"]}</td>
 						<td>{item["Customer Name"]}</td>
 						<td>{item["Transaction Type"]}</td>
-						<td>{item["Description"]}</td>
+						<td>{item["Description"] || "-"}</td>
 						<td>{item["Time Stamp"]}</td>
 						<td>{item["Amount"]}</td>
 					</tr>
