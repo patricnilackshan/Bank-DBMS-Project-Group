@@ -268,9 +268,9 @@ export function CreateManager() {
 							value="Submit"
 							onClick={(event) => {
 								event.preventDefault();
-								backend("/create-manager", {
+								backend("/create-employee", {
 									method: "POST",
-									body: formData,
+									body: {...formData, type: "manager"},
 								}).then((data) => {
 									if (typeof data == "string") {
 										console.error(data);

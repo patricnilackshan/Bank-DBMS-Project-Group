@@ -16,6 +16,7 @@ const { BCRYPT_SALT_ROUNDS } = require("../values");
  * @prop {string}	gender
  * @prop {string}	username
  * @prop {string}	password
+ * @prop {"staff" | "manager"} type
  */
 
 /**
@@ -35,6 +36,7 @@ async function handler(request, response) {
 		gender,
 		username,
 		password,
+		type
 	} = request.body;
 
 	branch = parseInt(branch);
@@ -48,13 +50,16 @@ async function handler(request, response) {
 		typeof email != "string" ||
 		typeof password != "string" ||
 		typeof phoneNumber != "string" ||
+		typeof type != "string" ||
 		Number.isNaN(branch) ||
 		Number.isNaN(nicNumber) ||
-		Number.isNaN(phoneNumber)
+		Number.isNaN(phoneNumber) ||
+		!(type == "manager" || type == "staff")
 	) {
 		response.status(400).send("Not all required fields are given");
 		return;
 	}
+	type = type.charAt(0).toUpperCase().concat(type.slice(1));
 
 	/** @type {string | null} */
 
@@ -101,7 +106,7 @@ async function handler(request, response) {
 			dateOfBirth,
 			gender,
 			username,
-			"Manager",
+			type,
 			// TODO
 			0,
 		],
