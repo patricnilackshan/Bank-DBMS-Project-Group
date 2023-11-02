@@ -1,0 +1,13 @@
+- [x] admin login
+- [x] customer login
+- [x] employee login
+- [x] manager login
+- [x] branches
+- [x] manager create
+- [x] generate report
+- [x] transaction
+- [ ] create employee
+- [ ] get profile details
+- [ ] view loan requests
+- [ ] approve loan requests
+- [ ] get customer details
