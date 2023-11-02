@@ -95,7 +95,7 @@ async function handler(request, response) {
     user_name,
     position,
     salary
-	) VALUES (?,?,?,)`,
+	) VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
 		[
 			firstName,
 			lastName,
