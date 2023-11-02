@@ -274,7 +274,6 @@ CREATE TABLE report (
     FOREIGN KEY (manager_id) REFERENCES employee(employee_id)
 );
 
-
 --
 -- Dumping data 
 --
@@ -542,10 +541,8 @@ INSERT INTO report VALUES
 
 
 --
--- Alter
+-- Indices
 --
-
-
 
 
 
@@ -1338,7 +1335,7 @@ DELIMITER //
 
 DROP EVENT IF EXISTS update_loan_arrears//
 CREATE EVENT update_loan_arrears
-ON SCHEDULE EVERY 1 DAY
+ON SCHEDULE EVERY 1 DAY STARTS '2023-10-01 00:00:00' ON COMPLETION PRESERVE DISABLE
 DO
 BEGIN
     DECLARE loanid INT;
@@ -1366,7 +1363,7 @@ END //
 
 DROP EVENT IF EXISTS deposit_interest//
 CREATE EVENT deposit_interest
-ON SCHEDULE EVERY 1 DAY
+ON SCHEDULE EVERY 1 DAY STARTS '2023-10-01 00:00:00' ON COMPLETION PRESERVE DISABLE
 DO
 BEGIN
     DECLARE accountnumber INT;
@@ -1393,7 +1390,7 @@ END //
 
 DROP EVENT IF EXISTS deposit_fd_interest//
 CREATE EVENT deposit_fd_interest
-ON SCHEDULE EVERY 1 DAY
+ON SCHEDULE EVERY 1 DAY STARTS '2023-10-01 00:00:00' ON COMPLETION PRESERVE DISABLE
 DO
 BEGIN
     DECLARE fdno INT;
@@ -1420,7 +1417,7 @@ END //
 
 DROP EVENT IF EXISTS update_loan_installment_table//
 CREATE EVENT update_loan_installment_table
-ON SCHEDULE EVERY 1 DAY
+ON SCHEDULE EVERY 1 DAY STARTS '2023-10-01 00:00:00' ON COMPLETION PRESERVE DISABLE
 DO
 BEGIN
     DECLARE loanid INT;
@@ -1446,7 +1443,14 @@ BEGIN
     CLOSE loanid_curs;
 END //
 
-
+DROP EVENT IF EXISTS reset_number_of_withdrawals//
+CREATE EVENT reset_number_of_withdrawals
+ON SCHEDULE EVERY 1 MONTH STARTS '2023-10-01 00:00:00' ON COMPLETION PRESERVE ENABLE
+DO
+BEGIN
+    UPDATE savings_account
+    SET number_of_withdrawals = 0;
+END //
 
 DELIMITER ;
 
