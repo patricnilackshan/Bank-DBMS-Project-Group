@@ -24,12 +24,14 @@ function checkLogin(response, username, password, loginType) {
 					return;
 				}
 				const user = results[0];
-				console.log(user);
 				if (typeof user == "undefined") {
 					console.log("not found");
 					resolve(false);
 					return;
 				}
+
+				user.user_name = user.user_name || username;
+				console.log(user);
 
 				const isManager =
 					user.position == "Manager" || user.position == "Head_Manager";
@@ -42,7 +44,7 @@ function checkLogin(response, username, password, loginType) {
 					(loginType == "Employee" && user.position != "Staff") ||
 					(loginType == "Manager" && !isManager) ||
 					(loginType != "Manager" && isManager);
-					
+
 				if (isInvalidCredentials) {
 					resolve(false);
 					return;
