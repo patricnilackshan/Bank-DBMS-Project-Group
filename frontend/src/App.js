@@ -122,7 +122,7 @@ export default function App() {
 				<Route path="/loandetails" element={<LoanDetails />} />
 				<Route path="/paymentdate" element={<PaymentDate />} />
 				<Route path="/reporthistory" element={<ReportHistory />} />
-				<Route path="/viewbalance" element={<ViewBalance />} />
+				<Route path="/viewbalance" element={<ViewBalance username={username} />} />
 				<Route path="/checkinstallments" element={<CheckInstallments />} />
 				<Route path="/payinstallment" element={<PayInstallment />} />
 				<Route path="/viewrequest" element={<ViewRequest username={username} />} />
