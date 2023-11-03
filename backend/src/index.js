@@ -14,6 +14,7 @@ const viewLoanRequests = require("./routes/view-loan-requests");
 const getCustomerDetails = require("./routes/get-customer-details");
 const getProfileDetails = require("./routes/get-profile-details");
 const approveLoanRequest = require("./routes/approve-loan-request");
+const getAccountDetails = require("./routes/get-account-details");
 
 app.use(express.json());
 app.use(cors());
@@ -27,6 +28,7 @@ app.get("/view-loan-requests", viewLoanRequests);
 app.get("/get-customer-details", getCustomerDetails);
 app.get("/get-profile-details", getProfileDetails);
 app.get("/approve-loan-request", approveLoanRequest);
+app.get("/get-account-details", getAccountDetails);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
