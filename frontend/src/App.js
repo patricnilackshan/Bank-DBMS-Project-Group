@@ -115,7 +115,7 @@ export default function App() {
 				<Route path="/approverequest" element={<ApproveRequest />} />
 				<Route path="/viewcustomer" element={<ViewCustomer />} />
 				<Route path="/viewemployee" element={<ViewEmployee />} />
-				<Route path="/viewmanager" element={<ViewManager />} />
+				<Route path="/viewmanager" element={<ViewManager username={username} />} />
 				<Route path="/getcustomeremployee" element={<GetCustomerEmployee />} />
 				<Route path="/getcustomermanager" element={<GetCustomerManager />} />
 				<Route path="/statement" element={<Statement />} />
