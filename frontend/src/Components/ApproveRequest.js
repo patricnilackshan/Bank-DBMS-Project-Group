@@ -59,6 +59,7 @@ export function ApproveRequest({ username }) {
 								placeholder="Enter loan ID"
 								size="48"
 								value={loanRequestDetails.loanRequestId}
+								name="loanRequestId"
 								onChange={handleInputChange}
 							/>
 						</div>
@@ -75,6 +76,7 @@ export function ApproveRequest({ username }) {
 								placeholder="Enter duration in months"
 								size="48"
 								value={loanRequestDetails.duration}
+								name="duration"
 								onChange={handleInputChange}
 							/>
 						</div>

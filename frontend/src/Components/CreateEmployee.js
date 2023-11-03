@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Parts.css";
 import { backend } from "../utilities";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export function CreateEmployee() {
 	const [formData, setFormData] = useState({
@@ -270,7 +270,7 @@ export function CreateEmployee() {
 								event.preventDefault();
 								backend("/create-employee", {
 									method: "POST",
-									body: {...formData, type: "staff"},
+									body: { ...formData, type: "staff" },
 								}).then((data) => {
 									if (typeof data == "string") {
 										console.error(data);
@@ -286,14 +286,15 @@ export function CreateEmployee() {
 					</div>
 
 					<br />
-					<button
-						className="backbutton"
-						formAction="/Admin"
-						type="submit"
-						style={{ color: "green" }}
-					>
-						<span>Back </span>
-					</button>
+					<Link to="/Admin">
+						<button
+							className="backbutton"
+							type="submit"
+							style={{ color: "green" }}
+						>
+							<span>Back </span>
+						</button>
+					</Link>
 				</div>
 			</form>
 		</div>

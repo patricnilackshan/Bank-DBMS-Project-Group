@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { backend } from "../utilities";
 import { useNavigate, Link } from "react-router-dom";
 
-export default function ({setGlobalUsername}) {
+export default function ({ setGlobalUsername }) {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [loginError, setLoginError] = useState("");

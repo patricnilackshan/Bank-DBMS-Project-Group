@@ -1,5 +1,6 @@
-import React from 'react';
-import './Parts.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import "./Parts.css";
 
 export function Admin() {
 	return (
@@ -9,37 +10,29 @@ export function Admin() {
 					<h3 class="Auth-form-title" align="center">
 						Welcome Back!
 					</h3>
-					<button
-						class="button"
-						style={{ verticalAlign: "middle" }}
-						formAction="/CreateManager"
-					>
-						<span>Create a Manager Account</span>
-					</button>
+					<Link to="/CreateManager">
+						<button class="button" style={{ verticalAlign: "middle" }}>
+							<span>Create a Manager Account</span>
+						</button>
+					</Link>
 					<br />
-					<button
-						class="button"
-						style={{ verticalAlign: "middle" }}
-						formAction="/CreateEmployee"
-					>
-						<span>Create an Employee Account</span>
-					</button>
+					<Link to="/CreateEmployee">
+						<button class="button" style={{ verticalAlign: "middle" }}>
+							<span>Create an Employee Account</span>
+						</button>
+					</Link>
 					<br />
-					<button
-						class="button"
-						style={{ verticalAlign: "middle" }}
-						formAction="/ReportHistory"
-					>
-						<span>View Report Generation History</span>
-					</button>
+					<Link to="/ReportHistory">
+						<button class="button" style={{ verticalAlign: "middle" }}>
+							<span>View Report Generation History</span>
+						</button>
+					</Link>
 					<br />
-					<button
-						class="button"
-						style={{ verticalAlign: "middle" }}
-						formAction="/"
-					>
-						<span>Log Out</span>
-					</button>
+					<Link to="/">
+						<button class="button" style={{ verticalAlign: "middle" }}>
+							<span>Log Out</span>
+						</button>
+					</Link>
 				</div>
 			</form>
 		</div>

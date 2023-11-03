@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { backend } from "../utilities";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function (props) {
 	const [username, setUsername] = useState("");
@@ -69,14 +69,15 @@ export default function (props) {
 					</div>
 
 					<div className="d-grid gap-2 mt-3">
+						<Link to="/">
 						<button
 							className="backbutton-small"
 							style={{ verticalAlign: "middle" }}
-							formAction="/"
 							type="submit"
 						>
 							<span>Back </span>
 						</button>
+						</Link>
 					</div>
 
 					<p className="forgot-password text-mid mt-3" align="center">
