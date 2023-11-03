@@ -11,6 +11,7 @@ const createEmployee = require("./routes/create-employee");
 const generateReport = require("./routes/generate-report");
 const transaction = require("./routes/transaction");
 const viewLoanRequests = require("./routes/view-loan-requests");
+const getCustomerDetails = require("./routes/get-customer-details");
 
 app.use(express.json());
 app.use(cors());
@@ -21,6 +22,7 @@ app.post("/create-employee", createEmployee);
 app.get("/generate-report", generateReport);
 app.post("/transaction", transaction);
 app.get("/view-loan-requests", viewLoanRequests);
+app.get("/get-customer-details", getCustomerDetails);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
