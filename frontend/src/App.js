@@ -105,7 +105,7 @@ export default function App() {
 					path="/transaction"
 					element={<Transaction username={username} />}
 				/>
-				<Route path="/applyloan" element={<ApplyLoan />} />
+				<Route path="/applyloan" element={<ApplyLoan username={username} />} />
 				<Route path="/createrequest" element={<CreateRequest />} />
 				<Route path="/createfd" element={<CreateFD />} />
 				<Route path="/employeetransaction" element={<EmployeeTransaction />} />

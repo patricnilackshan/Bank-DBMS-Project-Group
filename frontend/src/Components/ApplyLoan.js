@@ -1,8 +1,41 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./Parts.css";
+import { backend } from "../utilities";
 
-export function ApplyLoan() {
+export function ApplyLoan({ username }) {
+	const [loanInfo, setLoanInfo] = useState({
+		accountNumber: "",
+		amount: "",
+		type: "",
+		duration: "",
+		password: "",
+	});
+	const [error, setError] = useState("");
+	const navigate = useNavigate();
+
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setLoanInfo({
+			...loanInfo,
+			[name]: value,
+		});
+	};
+
+	const submit = () => {
+		backend("/apply-loan", {
+			method: "POST",
+			body: { ...loanInfo, username },
+		}).then((data) => {
+			if (typeof data == "string") {
+				setError(data);
+				return;
+			}
+			setError("");
+			navigate("/Customer");
+		});
+	};
+
 	return (
 		<div className="Auth-form-container">
 			<form className="Auth-form" action="/Customer">
@@ -21,6 +54,9 @@ export function ApplyLoan() {
 								className="form-control mt-1"
 								placeholder="Enter the account number linked with the fixed deposit"
 								size="48"
+								name="accountNumber"
+								value={loanInfo.accountNumber}
+								onChange={handleChange}
 							/>
 						</div>
 					</div>
@@ -36,6 +72,9 @@ export function ApplyLoan() {
 								placeholder="Enter loan amount in SCR"
 								min="1000"
 								max="999999"
+								name="amount"
+								value={loanInfo.amount}
+								onChange={handleChange}
 							/>
 						</div>
 					</div>
@@ -48,15 +87,19 @@ export function ApplyLoan() {
 							<input
 								type="radio"
 								id="business"
-								name="loanType"
+								name="type"
 								value="Business"
+								checked={loanInfo.type == "Business"}
+								onChange={handleChange}
 							/>
 							<label htmlFor="business">Business</label>
 							<input
 								type="radio"
 								id="personal"
-								name="loanType"
+								name="type"
 								value="Personal"
+								checked={loanInfo.type == "Personal"}
+								onChange={handleChange}
 							/>
 							<label htmlFor="personal">Personal</label>
 							<br />
@@ -70,9 +113,12 @@ export function ApplyLoan() {
 						<div className="col-75">
 							<input
 								type="number"
+								name="duration"
 								className="form-control mt-1"
 								placeholder="Enter duration in months"
 								size="48"
+								value={loanInfo.duration}
+								onChange={handleChange}
 							/>
 						</div>
 					</div>
@@ -87,13 +133,17 @@ export function ApplyLoan() {
 								className="form-control mt-1"
 								placeholder="Enter your password"
 								size="48"
+								value={loanInfo.password}
+								name="password"
+								onChange={handleChange}
 							/>
 						</div>
 					</div>
 
 					<br />
+					{error == "" ? null : <div>{error}</div>}
 					<div className="row">
-						<input type="submit" value="Apply" />
+						<input type="submit" value="Apply" onClick={submit} />
 					</div>
 					<Link to="/Customer">
 						<button className="backbutton" style={{ verticalAlign: "middle" }}>
