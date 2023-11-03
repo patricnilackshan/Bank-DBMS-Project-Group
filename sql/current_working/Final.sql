@@ -547,7 +547,7 @@ INSERT INTO report VALUES
 CREATE INDEX idx_account_account_number ON account(account_number);
 CREATE INDEX idx_savings_account_account_number ON web_platform_user(user_name);
 CREATE INDEX idx_savings_account_savings_plan_type ON savings_account(savings_plan_type);
-CREATE INDEX idx_manager_id ON branch(manager_id);
+CREATE INDEX idx_manager_id ON branch_manager(manager_id);
 
 
 --
