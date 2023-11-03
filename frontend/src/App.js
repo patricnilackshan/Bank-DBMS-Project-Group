@@ -117,7 +117,7 @@ export default function App() {
 				<Route path="/viewemployee" element={<ViewEmployee />} />
 				<Route path="/viewmanager" element={<ViewManager username={username} />} />
 				<Route path="/getcustomeremployee" element={<GetCustomerEmployee />} />
-				<Route path="/getcustomermanager" element={<GetCustomerManager />} />
+				<Route path="/getcustomermanager" element={<GetCustomerManager username={username} />} />
 				<Route path="/statement" element={<Statement />} />
 				<Route path="/loandetails" element={<LoanDetails />} />
 				<Route path="/paymentdate" element={<PaymentDate />} />
