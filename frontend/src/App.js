@@ -125,7 +125,7 @@ export default function App() {
 				<Route path="/viewbalance" element={<ViewBalance />} />
 				<Route path="/checkinstallments" element={<CheckInstallments />} />
 				<Route path="/payinstallment" element={<PayInstallment />} />
-				<Route path="/viewrequest" element={<ViewRequest />} />
+				<Route path="/viewrequest" element={<ViewRequest username={username} />} />
 			</Routes>
 		</BrowserRouter>
 	);
