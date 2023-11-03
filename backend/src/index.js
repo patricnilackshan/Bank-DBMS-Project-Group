@@ -13,6 +13,7 @@ const transaction = require("./routes/transaction");
 const viewLoanRequests = require("./routes/view-loan-requests");
 const getCustomerDetails = require("./routes/get-customer-details");
 const getProfileDetails = require("./routes/get-profile-details");
+const approveLoanRequest = require("./routes/approve-loan-request");
 
 app.use(express.json());
 app.use(cors());
@@ -25,6 +26,7 @@ app.post("/transaction", transaction);
 app.get("/view-loan-requests", viewLoanRequests);
 app.get("/get-customer-details", getCustomerDetails);
 app.get("/get-profile-details", getProfileDetails);
+app.get("/approve-loan-request", approveLoanRequest);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
