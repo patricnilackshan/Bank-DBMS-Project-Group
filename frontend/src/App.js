@@ -113,7 +113,7 @@ export default function App() {
 				<Route path="/deposit" element={<Deposit />} />
 				<Route path="/withdrawal" element={<Withdrawal />} />
 				<Route path="/approverequest" element={<ApproveRequest username={username} />} />
-				<Route path="/viewcustomer" element={<ViewCustomer />} />
+				<Route path="/viewcustomer" element={<ViewCustomer username={username} />} />
 				<Route path="/viewemployee" element={<ViewEmployee />} />
 				<Route path="/viewmanager" element={<ViewManager username={username} />} />
 				<Route path="/getcustomeremployee" element={<GetCustomerEmployee />} />
