@@ -112,7 +112,7 @@ export default function App() {
 				<Route path="/physicaltransaction" element={<PhysicalTransaction />} />
 				<Route path="/deposit" element={<Deposit />} />
 				<Route path="/withdrawal" element={<Withdrawal />} />
-				<Route path="/approverequest" element={<ApproveRequest />} />
+				<Route path="/approverequest" element={<ApproveRequest username={username} />} />
 				<Route path="/viewcustomer" element={<ViewCustomer />} />
 				<Route path="/viewemployee" element={<ViewEmployee />} />
 				<Route path="/viewmanager" element={<ViewManager username={username} />} />

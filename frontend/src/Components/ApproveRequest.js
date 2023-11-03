@@ -1,11 +1,48 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import "./Parts.css";
+import { backend } from "../utilities";
 
-export function ApproveRequest() {
+export function ApproveRequest({ username }) {
+	const [loanRequestDetails, setLoanRequestDetails] = useState({
+		loanRequestId: "",
+		duration: "",
+	});
+	const [error, setError] = useState("");
+
+	const navigate = useNavigate();
+
+	const handleInputChange = (event) => {
+		const { name, value } = event.target;
+		setLoanRequestDetails({ ...loanRequestDetails, [name]: value });
+	};
+
+	const submitRequest =
+		/**
+		 * @param {"Approve" | "Decline"} action
+		 */
+		(action) => {
+			backend("/approve-request", {
+				body: {
+					...loanRequestDetails,
+					action,
+					username,
+				},
+			}).then((data) => {
+				if (typeof data == "string") {
+					setError(data);
+					return;
+				}
+				setError("");
+				setTimeout(() => {
+					navigate(-1);
+				}, 1000);
+			});
+		};
+
 	return (
 		<div className="Auth-form-container">
-			<form className="Auth-form" action="/Manager">
+			<form className="Auth-form">
 				<div className="Auth-form-content">
 					<h3 className="Auth-form-title" align="center">
 						Enter the Details
@@ -21,6 +58,8 @@ export function ApproveRequest() {
 								className="form-control mt-1"
 								placeholder="Enter loan ID"
 								size="48"
+								value={loanRequestDetails.loanRequestId}
+								onChange={handleInputChange}
 							/>
 						</div>
 					</div>
@@ -35,22 +74,37 @@ export function ApproveRequest() {
 								className="form-control mt-1"
 								placeholder="Enter duration in months"
 								size="48"
+								value={loanRequestDetails.duration}
+								onChange={handleInputChange}
 							/>
 						</div>
 					</div>
 
 					<br />
+					{error == "" ? null : <div>{error}</div>}
 					<div className="row">
-						<input type="submit" value="Approve" />
+						<input
+							type="submit"
+							value="Approve"
+							onClick={() => {
+								submitRequest("Approve");
+							}}
+						/>
 					</div>
 
 					<br />
 					<div className="row">
-						<input type="submit" value="Decline" />
+						<input
+							type="submit"
+							value="Decline"
+							onClick={() => {
+								submitRequest("Decline");
+							}}
+						/>
 					</div>
 
 					<br />
-					<Link to="/Customer">
+					<Link to="/Manager">
 						<button className="backbutton" style={{ verticalAlign: "middle" }}>
 							<span>Back</span>
 						</button>
