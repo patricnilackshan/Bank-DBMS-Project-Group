@@ -4,27 +4,23 @@ import "./Parts.css";
 
 export function Customer() {
 	return (
-		<div className="Auth-form-container-big">
-			<form className="Auth-form" action="/Customer">
+		<div className="Auth-form-container">
+			<form className="Auth-form">
 				<div className="Auth-form-content">
 					<h3 className="Auth-form-title" align="center">
 						Welcome Back!
 					</h3>
-					<button
-						className="button"
-						style={{ verticalAlign: "middle" }}
-						formAction="/ViewCustomer"
-					>
-						<span>Get Profile Details </span>
-					</button>
+					<Link to="/ViewCustomer">
+						<button className="button" style={{ verticalAlign: "middle" }}>
+							<span>Get Profile Details </span>
+						</button>
+					</Link>
 					<br />
-					<button
-						className="button"
-						style={{ verticalAlign: "middle" }}
-						formAction="/ViewBalance"
-					>
-						<span>Get Account Details </span>
-					</button>
+					<Link to="/ViewBalance">
+						<button className="button" style={{ verticalAlign: "middle" }}>
+							<span>Get Account Details </span>
+						</button>
+					</Link>
 					<br />
 					<Link to="/Transaction">
 						<button className="button" style={{ verticalAlign: "middle" }}>
@@ -32,53 +28,42 @@ export function Customer() {
 						</button>
 					</Link>
 					<br />
-					<button
-						className="button"
-						style={{ verticalAlign: "middle" }}
-						formAction="/ApplyLoan"
-					>
-						<span>Apply for an Online Loan </span>
-					</button>
+					<Link to="/ApplyLoan">
+						<button className="button" style={{ verticalAlign: "middle" }}>
+							<span>Apply for an Online Loan </span>
+						</button>
+					</Link>
 					<br />
-					<button
-						className="button"
-						style={{ verticalAlign: "middle" }}
-						formAction="/CreateFD"
-					>
-						<span>Start a Fixed Deposit </span>
-					</button>
+					{/* <Link to="/CreateFD">
+						<button className="button" style={{ verticalAlign: "middle" }}>
+							<span>Start a Fixed Deposit </span>
+						</button>
+					</Link>
+					<br /> */}
+
+					<Link to="/CheckInstallments">
+						<button className="button" style={{ verticalAlign: "middle" }}>
+							<span>Check Loan Installments </span>
+						</button>
+					</Link>
 					<br />
-					<button
-						className="button"
-						style={{ verticalAlign: "middle" }}
-						formAction="/CheckInstallments"
-					>
-						<span>Check Loan Installments </span>
-					</button>
+					{/* <Link to="/PayInstallment">
+						<button className="button" style={{ verticalAlign: "middle" }}>
+							<span>Pay Loan Installments </span>
+						</button>
+					</Link>
+					<br /> */}
+					<Link to="/Statement">
+						<button className="button" style={{ verticalAlign: "middle" }}>
+							<span>Get Bank Statement </span>
+						</button>
+					</Link>
 					<br />
-					<button
-						className="button"
-						style={{ verticalAlign: "middle" }}
-						formAction="/PayInstallment"
-					>
-						<span>Pay Loan Installments </span>
-					</button>
-					<br />
-					<button
-						className="button"
-						style={{ verticalAlign: "middle" }}
-						formAction="/Statement"
-					>
-						<span>Get Bank Statement </span>
-					</button>
-					<br />
-					<button
-						className="button"
-						style={{ verticalAlign: "middle" }}
-						formAction="/"
-					>
-						<span>Log Out</span>
-					</button>
+					<Link to="/">
+						<button className="button" style={{ verticalAlign: "middle" }}>
+							<span>Log Out</span>
+						</button>
+					</Link>
 				</div>
 			</form>
 		</div>

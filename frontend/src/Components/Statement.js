@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Parts.css';
 
 export function Statement() {
@@ -6,9 +7,13 @@ export function Statement() {
     <div className="Auth-form-container">
       <form className="Auth-form" action="/Customer">
         <div className="Auth-form-content">
-          <button className="backbutton" style={{ verticalAlign: 'middle' }} formAction="/Customer">
+          <Link
+           to="/Customer"
+          >
+          <button className="backbutton" style={{ verticalAlign: 'middle' }}>
             <span>Back</span>
           </button>
+          </Link>
         </div>
       </form>
     </div>

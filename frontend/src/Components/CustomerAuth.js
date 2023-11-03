@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./Parts.css";
 import { backend } from "../utilities";
 
@@ -72,14 +72,15 @@ export default function ({ setGlobalUsername }) {
 					{loginError == "" ? null : <div>{loginError}</div>}
 
 					<div className="d-grid gap-2 mt-3">
+						<Link to="/">
 						<button
 							className="backbutton-small"
 							style={{ verticalAlign: "middle" }}
 							type="submit"
-              formAction="/"
 						>
 							<span>Back </span>
 						</button>
+						</Link>
 					</div>
 
 					<p className="forgot-password text-mid mt-3" align="center">

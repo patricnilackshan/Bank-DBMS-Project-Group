@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import "./Parts.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { backend } from "../utilities";
 
-export function Transaction({username}) {
+export function Transaction({ username }) {
 	const [transactionInfo, setTransactionInfo] = useState({
-		fromAccount: "2353560",
-		toAccount: "1002734",
-		amount: "1000",
-		password: "password",
+		fromAccount: "",
+		toAccount: "",
+		amount: "",
+		password: "",
 	});
 	const [error, setError] = useState("");
 	const navigate = useNavigate();
@@ -25,7 +25,7 @@ export function Transaction({username}) {
 		e.preventDefault();
 		backend("/transaction", {
 			method: "POST",
-			body: {...transactionInfo, username},
+			body: { ...transactionInfo, username },
 		}).then((data) => {
 			if (typeof data == "string") {
 				setError(data);
@@ -39,7 +39,7 @@ export function Transaction({username}) {
 
 	return (
 		<div className="Auth-form-container">
-			<form className="Auth-form" onSubmit={handleSubmit}>
+			<form className="Auth-form">
 				<div className="Auth-form-content">
 					<h3 className="Auth-form-title" align="center">
 						Enter the Details
@@ -118,16 +118,14 @@ export function Transaction({username}) {
 					{error == "" ? null : <div>{error}</div>}
 
 					<div className="row">
-						<input type="submit" value="Send" />
+						<input type="submit" value="Send" onClick={handleSubmit} />
 					</div>
 
-					<button
-						className="backbutton"
-						style={{ verticalAlign: "middle" }}
-						formAction="/Customer"
-					>
-						<span>Back</span>
-					</button>
+					<Link to="/Customer">
+						<button className="backbutton" style={{ verticalAlign: "middle" }}>
+							<span>Back</span>
+						</button>
+					</Link>
 				</div>
 			</form>
 		</div>
