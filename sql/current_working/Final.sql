@@ -544,6 +544,10 @@ INSERT INTO report VALUES
 -- Indices
 --
 
+CREATE INDEX idx_account_account_number ON account(account_number);
+CREATE INDEX idx_savings_account_account_number ON web_platform_user(user_name);
+CREATE INDEX idx_savings_account_savings_plan_type ON savings_account(savings_plan_type);
+CREATE INDEX idx_manager_id ON branch(manager_id);
 
 
 --
@@ -769,33 +773,6 @@ BEGIN
         END CASE;
     END IF;
 END //
-
-DELIMITER //
-
-DROP PROCEDURE IF EXISTS get_account_details//
-CREATE PROCEDURE get_account_details(
-    IN username VARCHAR(50)
-)
-BEGIN
-    SELECT
-        `Account Number`,
-        `Customer ID`,
-        `Customer Type`,
-        `Customer Name`,
-        `Branch ID`,
-        `Branch Name`,
-        `Balance`,
-        `Open Date`,
-        `Account Status`,
-        `Account Type`,
-        `Savings Plan Type`,
-        next_calculation_on AS `Next Calculation On`,
-        `Interest Rate`
-    FROM account_details_view
-    WHERE `User Name` = username;
-END //
-
-DELIMITER //
 
 DROP PROCEDURE IF EXISTS get_branch_transactions//
 CREATE PROCEDURE get_branch_transaction_details(
@@ -1224,6 +1201,29 @@ BEGIN
     -- Insert record into deposit table
     INSERT INTO deposit (transaction_id, account_number)
     VALUES (transactionid, accountnumber);
+END //
+
+DROP PROCEDURE IF EXISTS get_account_details//
+CREATE PROCEDURE get_account_details(
+    IN username VARCHAR(50)
+)
+BEGIN
+    SELECT
+        `Account Number`,
+        `Customer ID`,
+        `Customer Type`,
+        `Customer Name`,
+        `Branch ID`,
+        `Branch Name`,
+        `Balance`,
+        `Open Date`,
+        `Account Status`,
+        `Account Type`,
+        `Savings Plan Type`,
+        `Interest Rate`,
+        next_calculation_on AS `Next Calculation On`
+    FROM account_details_view
+    WHERE `User Name` = username;
 END //
 
 -- automated procedures

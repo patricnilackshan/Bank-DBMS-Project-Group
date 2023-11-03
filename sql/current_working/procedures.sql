@@ -497,6 +497,29 @@ BEGIN
     VALUES (transactionid, accountnumber);
 END //
 
+DROP PROCEDURE IF EXISTS get_account_details//
+CREATE PROCEDURE get_account_details(
+    IN username VARCHAR(50)
+)
+BEGIN
+    SELECT
+        `Account Number`,
+        `Customer ID`,
+        `Customer Type`,
+        `Customer Name`,
+        `Branch ID`,
+        `Branch Name`,
+        `Balance`,
+        `Open Date`,
+        `Account Status`,
+        `Account Type`,
+        `Savings Plan Type`,
+        `Interest Rate`,
+        next_calculation_on AS `Next Calculation On`
+    FROM account_details_view
+    WHERE `User Name` = username;
+END //
+
 -- automated procedures
 
 DROP PROCEDURE IF EXISTS add_remove_loan_arrears//
