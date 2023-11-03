@@ -795,7 +795,7 @@ BEGIN
     WHERE `User Name` = username;
 END //
 
-DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS get_branch_transactions//
 CREATE PROCEDURE get_branch_transaction_details(
