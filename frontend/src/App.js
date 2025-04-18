@@ -32,7 +32,7 @@ import { CreateRequest } from "./Components/CreateRequest";
 import { CreateFD } from "./Components/CreateFD";
 import { EmployeeTransaction } from "./Components/EmployeeTransaction";
 import { PhysicalTransaction } from "./Components/PhysicalTransaction";
-import { Deposit } from "./Components/Deposit";
+import { Deposit } from "./Components/DEposit";
 import { Withdrawal } from "./Components/Withdrawal";
 import { ApproveRequest } from "./Components/ApproveRequest";
 import { ViewCustomer } from "./Components/ViewCustomer";
